@@ -1,0 +1,326 @@
+DEBUG_BASHRC=0
+
+## Damn, this is ugly...  resetting the path so I can change work environment
+
+export PATH="/usr/local/bin"
+export PATH=${PATH}:"/usr/bin"
+export PATH=${PATH}:"/bin"
+export PATH=${PATH}:"/cygdrive/c/Windows/system32"
+export PATH=${PATH}:"/cygdrive/c/Windows"
+export PATH=${PATH}:"/cygdrive/c/Windows/System32/Wbem"
+export PATH=${PATH}:"/cygdrive/c/Windows/System32/WindowsPowerShell/v1.0/"
+export PATH=${PATH}:"/cygdrive/c/Program Files/Dell/DW WLAN Card"
+export PATH=${PATH}:"/cygdrive/c/Program Files (x86)/Common Files/Roxio Shared/DLLShared/"
+export PATH=${PATH}:"/cygdrive/c/Program Files (x86)/Common Files/Roxio Shared/OEM/DLLShared/"
+export PATH=${PATH}:"/cygdrive/c/Program Files (x86)/Common Files/Roxio Shared/OEM/DLLShared/"
+export PATH=${PATH}:"/cygdrive/c/Program Files (x86)/Common Files/Roxio Shared/OEM/12.0/DLLShared/"
+export PATH=${PATH}:"/cygdrive/c/Program Files (x86)/Roxio/OEM/AudioCore/"
+export PATH=${PATH}:"/cygdrive/c/Program Files (x86)/Common Files/ColumbiaSoft Shared"
+export PATH=${PATH}:"/usr/lib/lapack"
+
+# pathmunge -------------------------------------------------------------------
+#
+# Stolen from /etc/profile on RedHat Linux
+# Used to add stuff to your path, but it 
+# won't add it if it's already there.
+pathmunge () {
+  # echo "  MUNGE: $1 $2"
+  # echo "if [ ! \`echo $PATH | egrep -s \"(^|:)$1($|:)\"\` ] ; then"
+  if [ ! `echo $PATH | egrep -s "(^|:)$1($|:)"` ] ; then
+    # echo "    trace 1"
+    if [ "$2" = "after" ] ; then
+       # echo "    trace 2"
+      PATH=$PATH:$1
+    else
+       # echo "    trace 3"
+      PATH=$1:$PATH
+    fi
+  fi
+}
+
+# Work Settings ----------------------------------------------------------------
+#
+if [ $DEBUG_BASHRC == 1 ]; then echo "Work settings..."; fi
+export TDFWORK=${HOME}/work/TDF/HEAD
+export TDF51WORK=${HOME}/work/TDF/5.1-patches
+export TDF50WORK=${HOME}/work/TDF/5.0-patches
+export TDF48WORK=${HOME}/work/TDF/4.8-patches
+#export TDFEXTWORK=${HOME}/work/TDFMISC/HEAD
+export TDFEXTWORK=${TDFWORK}
+#export TDFPROJWORK=${HOME}/work/TDFMISC/HEAD
+export TDFPROJWORK=${TDFWORK}
+
+export SCULPTWORK=${HOME}/work/Sculpt/HEAD
+export SCULPT10WORK=${HOME}/work/Sculpt/1.0-patches
+
+export TCFWORK=${HOME}/work/Portal/HEAD
+export TCF10WORK=${HOME}/work/Portal/1.0-patches
+export MSCTWORK=${HOME}/work/MSCT
+export MERIDIANWORK=${HOME}/work/Meridian/HEAD
+export VIGWORK=${HOME}/work/Vigilare/HEAD
+export ACMAWORK=${HOME}/work/ACMA
+export TCSWORK=${HOME}/work/TCS/tcs-release-1-0-patches
+export GSWORK=${HOME}/work/Meridian/HEAD
+
+export MUDWORK=${HOME}/work/TDFMSCT/HEAD
+export MUD51WORK=${HOME}/work/TDFMSCT/5.1-patches
+export MUD413WORK=${HOME}/work/TDFMSCT/4.13-patches
+export MUD4135WORK=${HOME}/work/TDFMSCT/4.13.5
+
+export ZEUSWORK=${HOME}/work/ZEUS/HEAD
+export ZEUS20WORK=${HOME}/work/ZEUS/2.0-patches
+export ZEUS22WORK=${HOME}/work/ZEUS/2.2-patches
+
+export MIMSWORK=${HOME}/work/MIMS/HEAD
+export MIMSTESTWORK=${HOME}/work/MIMS/TEST
+
+if [ "foo$WORK" == "foo" ]
+then
+  #export WORK=${TDFWORK}
+  #export WORK=${SCULPTWORK}
+  #export WORK=${ZEUS20WORK}
+  export WORK=${MIMSWORK}
+fi
+
+# Java Settings ----------------------------------------------------------------
+#
+if [ $DEBUG_BASHRC == 1 ]; then echo "Java settings..."; fi
+export JAVA_ROOT=/cygdrive/c/Progra~1/Java/jdk1.6.0_23
+export JAVA_HOME=${JAVA_ROOT}
+export JAVA_HOME_W32=`/bin/cygpath -m $JAVA_HOME `
+pathmunge ${JAVA_HOME}/bin
+
+# Assault Settings -------------------------------------------------------------
+#
+if [ $DEBUG_BASHRC == 1 ]; then echo "Assault settings..."; fi
+#export ASSAULT_HOME=${TDFWORK}/assault/release
+export ASSAULT_HOME=${WORK}/assault/release
+export ASSAULT_HOME_W32=`/bin/cygpath -m $ASSAULT_HOME `
+pathmunge ${ASSAULT_HOME}/bin
+
+# Ant Definitions (common) -----------------------------------------------------
+#
+if [ $DEBUG_BASHRC == 1 ]; then echo "Ant settings..."; fi
+export ANT_OPTS="-Xms64m -Xmx256m"
+export ANT_OPTS="${ANT_OPTS} -DJAVA_HOME=${JAVA_HOME_W32}"
+export ANT_OPTS="${ANT_OPTS} -DASSAULT_HOME=${ASSAULT_HOME_W32}"
+export XALAN_W32=`/bin/cygpath -m ${ASSAULT_HOME}/lib/xalan-2.7 `
+export ANT_OPTS="${ANT_OPTS} -Djava.endorsed.dirs=${XALAN_W32}"
+export LICENSE_DIR=`/bin/cygpath -m ${HOME}/licenses`
+export ANT_OPTS="${ANT_OPTS} -DLicense.dir=${LICENSE_DIR}"
+export ANT_ARGS="-s build.xml"
+pathmunge ${ASSAULT_HOME}/ant/bin
+
+# PostgreSQL Settings ----------------------------------------------------------
+#
+if [ $DEBUG_BASHRC == 1 ]; then echo "PostgreSQL settings..."; fi
+export PGSQL_HOME=/usr/local/pgsql-8.3.6
+pathmunge ${PGSQL_HOME}/bin
+
+# CVS Settings -----------------------------------------------------------------
+#
+if [ $DEBUG_BASHRC == 1 ]; then echo "CVS settings..."; fi
+export CVSHOST=cvs.solipsys.com
+export CVSDIR=/cvs
+export CVSROOT=:ext:${USER}@${CVSHOST}:${CVSDIR}
+export CVS_RSH=ssh
+
+
+# GnuWin settings -------------------------------------------------------------
+#
+export GNUWIN_HOME=/cygdrive/c/Progra~1/GnuWin32
+pathmunge ${GNUWIN_HOME}/bin after
+
+# Git settings -------------------------------------------------------------
+#
+export GIT_HOME=/cygdrive/c/Git
+pathmunge ${GIT_HOME}/bin after
+
+# CDPATH Definitions -----------------------------------------------------------
+#
+if [ $DEBUG_BASHRC == 1 ]; then echo "CDPATH settings..."; fi
+#export TDFDEPROOT=${TDFWORK}/tdf-dep
+#export RODINROOT=${SCULPTWORK}/rodin
+#export TCFROOT=${TCFWORK}/tcf/src/com/solipsys/tcf
+
+#export TDFROOT=${WORK}/metamorph
+#export SOLSRCROOT=${TDFROOT}/sol/src/com/solipsys
+#export GEOSRCROOT=${TDFROOT}/geo/src/com/solipsys/geo
+#export TDFSRCROOT=${TDFROOT}/tdf/src/com/solipsys/tdf
+#export TDFPROJROOT=${WORK}/tdf-projects
+#export TDFEXTROOT=${WORK}/tdf-extensions
+#export MUDROOT=${MSCTWORK}/mud/msct/src/com/solipsys
+
+export     TDFROOT=${WORK}/metamorph
+export  SOLSRCROOT=${TDFROOT}/sol/src/com/solipsys
+export  GEOSRCROOT=${TDFROOT}/geo/src/com/solipsys/geo
+export  TDFSRCROOT=${TDFROOT}/tdf/src/com/solipsys/tdf
+
+export TDFPROJROOT=${WORK}/tdf-projects
+export  TDFEXTROOT=${WORK}/tdf-extensions
+export  TDFDEPROOT=${WORK}/tdf-dep
+export     TCFROOT=${WORK}/tcf/src/com/solipsys/tcf
+export   RODINROOT=${WORK}/rodin
+export     MUDROOT=${WORK}/mud/msct/src/com/solipsys
+export      GSROOT=${WORK}/geoserver
+
+export CDPATH=.
+export CDPATH=${CDPATH}:${MUDROOT}
+export CDPATH=${CDPATH}:${TCFROOT}
+export CDPATH=${CDPATH}:${RODINROOT}
+export CDPATH=${CDPATH}:${TDFPROJROOT}
+export CDPATH=${CDPATH}:${TDFDEPROOT}
+export CDPATH=${CDPATH}:${TDFEXTROOT}
+export CDPATH=${CDPATH}:${SOLSRCROOT}
+export CDPATH=${CDPATH}:${GEOSRCROOT}
+export CDPATH=${CDPATH}:${TDFSRCROOT}
+export CDPATH=${CDPATH}:${TDFROOT}
+export CDPATH=${CDPATH}:${WORK}
+
+
+
+# Personal Config --------------------------------------------------------------
+#
+if [ $DEBUG_BASHRC == 1 ]; then echo "Personal config settings..."; fi
+pathmunge ${HOME}/bin after
+umask 022
+#unset autologout
+
+# Don't auto-complete CVS directories
+export FIGNORE='\~:CVS:.class:.o'
+export fignore='\~:CVS:.class:.o'
+
+# Change the ls colors so that directories are white (i.e., NOT BLUE)
+
+# echo "set colors"
+
+export LS_COLORS='no=00:fi=00:di=01;37:ln=01;36:pi=40;33:so=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=01;32:*.cmd=01;32:*.exe=01;32:*.com=01;32:*.btm=01;32:*.bat=01;32:*.sh=01;32:*.csh=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.bz=01;31:*.tz=01;31:*.rpm=01;31:*.cpio=01;31:*.jpg=01;35:*.gif=01;35:*.bmp=01;35:*.xbm=01;35:*.xpm=01;35:*.png=01;35:*.tif=01;35:'
+
+# Aliases ----------------------------------------------------------------------
+#
+alias la="ls -alF"
+alias ll="ls -lF"
+alias pd='pushd'
+alias po='popd'
+alias rm='/bin/rm -i'
+alias m='less'
+
+alias goro="sudo su -"
+#alias goat="sudo su - atlas"
+alias goat="ssh atlas01"
+alias gopg="sudo su - postgres"
+
+alias psg="ps -ef | grep "
+alias ep='echo $PATH | tr ":" "\n" '
+
+alias ant="ant notest"
+
+alias cvss='cvs status | grep Status'
+alias cvsu="cvs -n update 2>&1 | grep -v 'update' | grep -v 'cvs server'"
+
+alias gs='git status'
+
+# Get to the visualization servers easily
+alias vs1='ssh 10.2.121.178'
+alias vs2='ssh 10.2.121.179'
+alias vs3='ssh 10.2.121.180'
+
+# Change work environment
+alias wt="export WORK=$TDFWORK ; . ~/.bashrc"
+alias wt51="export WORK=$TDF51WORK ; . ~/.bashrc"
+alias wt50="export WORK=$TDF50WORK ; . ~/.bashrc"
+alias wt48="export WORK=$TDF48WORK ; . ~/.bashrc"
+alias ws="export WORK=$SCULPTWORK ; . ~/.bashrc"
+alias ws1="export WORK=$SCULPT10WORK ; . ~/.bashrc"
+alias wz="export WORK=$ZEUSWORK ; . ~/.bashrc"
+alias wz2="export WORK=$ZEUS22WORK ; . ~/.bashrc"
+alias wm="export WORK=$MERIDIANWORK ; . ~/.bashrc"
+alias wp="export WORK=$TCFWORK ; . ~/.bashrc"
+alias wp1="export WORK=$TCF10WORK ; . ~/.bashrc"
+alias wm="export WORK=$GSWORK ; . ~/.bashrc"
+alias wmud="export WORK=$MUDWORK ; . ~/.bashrc"
+alias wmud51="export WORK=$MUD51WORK ; . ~/.bashrc"
+alias wmud413="export WORK=$MUD413WORK ; . ~/.bashrc"
+alias wmud4135="export WORK=$MUD4135WORK ; . ~/.bashrc"
+alias wmims="export WORK=$MIMSWORK ; . ~/.bashrc"
+alias wmimstest="export WORK=$MIMSTESTWORK ; . ~/.bashrc"
+
+# Get to the razors easily
+alias r01='ssh razor01'
+alias r02='ssh razor02'
+alias r03='ssh razor03'
+alias r04='ssh razor04'
+alias r05='ssh razor05'
+alias r06='ssh razor06'
+alias r07='ssh razor07'
+alias r08='ssh razor08'
+alias r09='ssh razor09'
+alias r10='ssh razor10'
+alias r11='ssh razor11'
+alias r12='ssh razor12'
+alias r13='ssh razor13'
+alias r14='ssh razor14'
+alias r15='ssh razor15'
+alias r16='ssh razor16'
+
+# Bring up a new terminal
+alias rxvt='rxvt -display :0 -fn "Lucida Console-14" -tn rxvt-cygwin-native -bg black -fg goldenrod -sl 1000 -e /bin/bash --login'
+
+
+# PROMPT ----------------------------------------------------------------------
+#
+#export PS1=[\u@\h \W]\$
+#export PS1="\n*** \A \u@\h \w ***\n> "
+
+PROMPT_COMMAND=build_prompt
+
+check_success()
+{
+  if [ "$?" -eq 0 ]; then
+    HIST_COLOR="$GREEN"
+  else
+    HIST_COLOR="$BOLD_RED"
+  fi
+}
+
+parse_git_description()
+{
+  git describe 2> /dev/null  | sed -e 's/\(.*\)/ \[\1\]/'
+}
+
+parse_git_branch()
+{
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \[\1\]/'
+}
+
+build_prompt()
+{
+  check_success
+  gitBranch=$(parse_git_branch)
+  if [ "$gitBranch" == " [(no branch)]" ]; then
+    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $DARK_GREEN\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w$BOLD_RED\$(parse_git_description)$BLACK\n\$ "
+  else
+    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $DARK_GREEN\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w$BOLD_GREEN\$(parse_git_branch)$BLACK\n\$ "
+  fi
+}
+
+# echo "define colors"
+
+BLACK="\[\033[0m\]"
+BOLD_BLACK="\[\033[1;30m\]"
+RED="\[\033[0;31m\]"
+BOLD_RED="\[\033[1;31m\]"
+GREEN="\[\033[0;32m\]"
+BOLD_GREEN="\[\033[1;32m\]"
+YELLOW="\[\033[0;33m\]"
+BOLD_YELLOW="\[\033[1;33m\]"
+BLUE="\[\033[0;34m\]"
+BOLD_BLUE="\[\033[1;34m\]"
+MAUVE="\[\033[0;35m\]"
+BOLD_MAUVE="\[\033[1;35m\]"
+CYAN="\[\033[0;36m\]"
+BOLD_CYAN="\[\033[1;36m\]"
+WHITE="\[\033[0;37m\]"
+DARK_GREEN="\[\033]0;\w\007\033[32m\]"
+
+

@@ -1,0 +1,95 @@
+#echo "Entering ~dcprice/.aliases"
+
+alias atlas     'ssh atlas01'
+alias sol       'cd /cygdrive/c/Doug/work/metamorph/sol/src/com/solipsys'
+alias geo       'cd /cygdrive/c/Doug/work/metamorph/geo/src/com/solipsys/geo'
+alias tdf       'cd /cygdrive/c/Doug/work/metamorph/tdf/src/com/solipsys/tdf'
+alias sculpt    'cd /cygdrive/c/Doug/work/rodin/sculpt/src/com/solipsys/sculpt'
+alias cast      'cd /cygdrive/c/Doug/work/rodin/cast/src/com/solipsys/cast'
+alias timesrc   'cd /cygdrive/c/Doug/work/tdf-extensions/time/src/com/solipsys/time'
+alias esprit    'cd /cygdrive/c/Doug/work-obelisk/obelisk/esprit/src/com/solipsys/esprit'
+alias pmrf      'cd /cygdrive/c/Doug/work-obelisk/obelisk/pmrf/src/com/solipsys/pmrf'
+alias cda       'cd /cygdrive/a'
+alias cdc       'cd /cygdrive/c'
+alias cdd       'cd /cygdrive/d'
+alias cde       'cd /cygdrive/e'
+alias cdf       'cd /cygdrive/f'
+alias cdp       'cd /cygdrive/p'
+alias cdq       'cd /cygdrive/q'
+alias cdu       'cd /cygdrive/u'
+alias desk      'cd /cygdrive/c/Documents\ and\ Settings/dcprice/Desktop'
+alias acp       'setenv CLASSPATH ${CLASSPATH};\!*'
+alias ant       'ant notest'
+alias cba       'pushd /cygdrive/c/Doug/work/tdf-extensions/time ; ant clean ; cd ../dis ; ant clean ; cd ../../rodin/sculpt ; ant clean ; cd ../cast ; ant clean ; cd ../rodin ; ant clean ; ant rodin && popd && setprmpt'
+alias df        'df -k'
+alias diff      'diff -b'
+alias du        'du -k'
+alias dx2txt    'java -classpath rodin.jar\;sol.jar\;geo.jar\;log4j.jar com.solipsys.rodin.dx.DxTextConverter systemLog.prp'
+alias ec        'echo $CLASSPATH | tr ":" "\n" '
+alias el        'echo $LD_LIBRARY_PATH | tr ":" "\n" '
+alias ep        'echo $PATH | tr ":" "\n" '
+alias ff        '/cygdrive/c/Program\ Files/Mozilla\ Firefox/firefox.exe `echo ${PWD}/\!* | sed s#/cygdrive/c#file:///C:# | sed "s# #%20#" ` '
+alias gi        'gvim'
+alias gvim      'gvim \!* &'
+alias gp        'grep public '
+alias gps       'grep public \!* | grep set '
+alias h         'history | tail '
+#alias j14	'setenv PATH `echo $PATH | sed s/jdk1.3.1_11/j2sdk1.4.2/`; setenv JAVA_HOME /cygdrive/c/j2sdk1.4.2 '
+#alias j16	'setenv PATH `echo $PATH | sed s#/cygdrive/c/j2sdk1.4.2##`; setenv JAVA_HOME /cygdrive/c/Progra~1\Java\jdk1.6.0_02 '
+alias jf	'find . -name "*.java" '
+alias la        'ls -ACF'
+alias lj        'ls -F *.java'
+alias llj       'ls -lF *.java'
+alias ll        'ls -lF'
+alias ls        'ls -CF'
+alias m         'less '
+alias makeps    'mp -lo -s "\!*" <\!* > "\!*".ps'
+alias pd        'pushd \!* ; cd .'
+alias po        'popd \!* ; cd .'
+alias psg       'ps -ef | head -1; ps -ef | grep \!* | grep -v grep | sort'
+alias rj        'java -cp `cygpath -mp $CLASSPATH` -DLicense.customer="Douglas Price" -DLicense.key=ACQ-W2P-RCG-YEY-RPB-FS5-DGN \!*'
+alias rjnl      'java -cp `cygpath -mp $CLASSPATH` \!*'
+alias settitle1 'echo -n ]1\;\!*'
+alias settitle2 'echo -n ]2\;\!*'
+#alias ssh       'ssh "\!*" ; settitle2 ${USER}@`/bin/uname -n`'
+alias ssh       'ssh "\!*" ; settitle2 ${DEV_ENV}'
+alias who       'who | sort'
+
+alias r01       'ssh razor01'
+alias r02       'ssh razor02'
+alias r03       'ssh razor03'
+alias r04       'ssh razor04'
+alias r05       'ssh razor05'
+alias r06       'ssh razor06'
+alias r07       'ssh razor07'
+alias r08       'ssh razor08'
+alias r09       'ssh razor09'
+alias r10       'ssh razor10'
+alias r11       'ssh razor11'
+alias r12       'ssh razor12'
+alias r13       'ssh razor13'
+alias r14       'ssh razor14'
+alias r15       'ssh razor15'
+alias r16       'ssh razor16'
+
+### CVS control ###
+alias cvss      "cvs status \!* |&  grep 'Status:' | grep -v Up-to-date"
+alias cvssl     "cvs status -l \!* | grep 'Status:'"
+alias cvsu      "cvs -n update |& grep -v 'update' | grep -v 'cvs server' "
+
+set e="`echo x | /usr/bin/tr x \\033`"
+set hostn = `/bin/hostname | /bin/sed -e '/^ *$/d' -e 's/\..*//' `
+
+alias setprmpt 'set prompt = "\\
+%B***%b %t %B***%b %! %B***%b %m:`dirs` %B***%b\\
+%# "'
+alias rootprmpt 'set prompt = "\\
+%B@@@@@ /! @@@@@ %m - You are ROOT @@@@@ %c @@@@@%b\\
+%# "'
+
+alias cd 'cd \!* ; setprmpt'
+#alias cd 'cd \!* ; eval "if (-o /bin/su) then \\
+#                        rootprmpt \\
+#                else \\
+#                        setprmpt \\
+#                endif"'
