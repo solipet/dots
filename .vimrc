@@ -61,12 +61,12 @@ set nobackup
 set background=dark
 
 " automatically show matching (, { or [ after matching one is typed
-"set showmatch
+set showmatch
 
 " number of spaces to automatically indent
 set shiftwidth=2
 set softtabstop=2
-"set tabstop=2
+set tabstop=2
 
 " Use spaces instead of tabs
 set expandtab
@@ -92,36 +92,6 @@ set autowrite
 " This is necessary for ant to work since it searches up from the
 " current directory to find the appropriate build.xml file
 autocmd BufEnter * cd %:p:h
-
-" Default compile command for java is to use javac on the current file
-autocmd BufEnter,BufNewFile,BufRead *.java set makeprg=javac\ -J\-Xms$JAVA_MIN\ -J\-Xmx$JAVA_MAX\ %
-
-" Use JDK 1.3 for buzzword
-"autocmd BufNewFile,BufRead */buzzword/*.java set makeprg=/usr/java/jdk1.3.1_08/bin/javac\ -J\-Xms$JAVA_MIN\ -J\-Xmx$JAVA_MAX\ %
-autocmd BufEnter,BufNewFile,BufRead */buzzword/*.java set makeprg=javac\ -J\-Xms$JAVA_MIN\ -J\-Xmx$JAVA_MAX\ %
-
-
-" Compile command to use ant when editing a java file under a src dir
-" in metamorph.  Can't just do */metamorph/*.java because dynamic
-" java files in the config dir don't compile with ant
-autocmd BufEnter,BufNewFile,BufRead */metamorph/*/src/*.java set makeprg=ant\ -DTO_COMPILE=`echo\ %:p\ \\\|\ gawk\ '{\ print\ substr\(\ $1,\ index\(\ $1,\ \"com\"\ \)\ \)\ }'`\ -q\ -emacs\ compilethis\ 2>&1
-
-autocmd BufEnter,BufNewFile,BufRead */tdf-extensions/*/src/*.java set makeprg=ant\ -DTO_COMPILE=`echo\ %:p\ \\\|\ gawk\ '{\ print\ substr\(\ $1,\ index\(\ $1,\ \"com\"\ \)\ \)\ }'`\ -q\ -emacs\ compilethis\ 2>&1
-
-" Compile docbook xml files by using ant with the createManuals target
-autocmd BufEnter,BufNewFile,BufRead */metamorph/*/docsrc/*.xml set makeprg=ant\ createManuals\ 2>&1
-
-autocmd BufEnter,BufNewFile,BufRead */metamorph/*/testsrc/*.java set makeprg=ant\ -q\ -emacs\ testcompile\ 2>&1
-
-" Compile metamorph example code using javac directly instead of ant
-"autocmd BufEnter,BufNewFile,BufRead */metamorph/example/*.java set makeprg=javac\ -J\-Xms$JAVA_MIN\ -J\-Xmx$JAVA_MAX\ %
-autocmd BufEnter,BufNewFile,BufRead */metamorph/example/*.java set makeprg=ant\ -q\ -emacs\ compile\ 2>&1
-
-"autocmd BufEnter,BufNewFile,BufRead */TTBD-Source/*.java set makeprg=ant\ -q\ -emacs\ build\ 2>&1
-
-" autocmd BufEnter,BufNewFile,BufRead */metamorph/*.java set makeprg=ant\ -DTO_COMPILE=`cygpath\ -a\ %\ \\\|\ gawk\ '{\ print\ substr\(\ $1,\ index\(\ $1,\ \"com\"\ \)\ \)\ }'`\ -q\ -emacs\ compilethis\ 2>&1\ \\\|\ sed\ 's/.:.*\\\\\\(.*\\.java\\)\\(.*\\)/\\1\\2/'
-
-autocmd BufEnter,BufNewFile,BufRead *.C set makeprg=gcc\ %
 
 " This is supposed to make vim open the file at the last edited location but
 " it doesn't seem to work.
@@ -149,13 +119,6 @@ au FileType sh,make,perl let b:comment_leader = '#'
 au FileType vim let b:comment_leader = '"'
 vmap <F7> :<C-B>sil <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
 vmap <F8> :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
-
-" Mappings to make edit-compile-fix cycle go faster
-nmap <F9> :make
-nmap <F10> :clist
-nmap <F11> :cprev
-nmap <F12> :cnext
-map ~wn <ESC>:highlight WhiteSpaceEol ctermbg=darkgreen guibg=lightgreen<CR><ESC>:match WhiteSpaceEol /\s\+$/<CR>
 
 map ~wf <ESC>:highlight WhiteSpaceEol NONE<CR>
 
