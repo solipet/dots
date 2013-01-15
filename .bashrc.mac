@@ -2,10 +2,7 @@ DEBUG_BASHRC=0
 
 ## Damn, this is ugly...  resetting the path so I can change work environment
 
-export PATH="/Users/doug/.rvm/gems/ruby-1.9.3-p286/bin"
-export PATH=${PATH}:"/Users/doug/.rvm/gems/ruby-1.9.3-p286@global/bin"
-export PATH=${PATH}:"/Users/doug/.rvm/rubies/ruby-1.9.3-p286/bin"
-export PATH=${PATH}:"/Users/doug/.rvm/bin"
+export PATH="/Users/doug/.rvm/bin"
 export PATH=${PATH}:"/usr/bin"
 export PATH=${PATH}:"/bin"
 export PATH=${PATH}:"/usr/sbin"
@@ -155,6 +152,7 @@ alias m='less'
 
 alias goro="sudo su -"
 alias gopg="sudo su - postgres"
+alias goaws='ssh -i /Users/doug/Documents/dev/DougPrice.pem ubuntu@ec2-107-22-99-76.compute-1.amazonaws.com'
 
 alias psg="ps -ef | grep "
 alias ep='echo $PATH | tr ":" "\n" '
@@ -175,6 +173,7 @@ alias sql3l='sqlite3 -line db/development.sqlite3'
 
 # Change work environment
 alias wa="export WORK=$ALCHEMEEWORK ; . ~/.bashrc"
+
 
 # PROMPT ----------------------------------------------------------------------
 #
