@@ -2,12 +2,11 @@ DEBUG_BASHRC=0
 
 ## Damn, this is ugly...  resetting the path so I can change work environment
 
-export PATH="/Users/doug/.rvm/bin"
+export PATH="/usr/local/bin"
 export PATH=${PATH}:"/usr/bin"
 export PATH=${PATH}:"/bin"
 export PATH=${PATH}:"/usr/sbin"
 export PATH=${PATH}:"/sbin"
-export PATH=${PATH}:"/usr/local/bin"
 
 # pathmunge -------------------------------------------------------------------
 #
@@ -61,6 +60,11 @@ then
   export WORK=${ALCHEMEEDEV}
 fi
 
+# RVM Settings -----------------------------------------------------------------
+#
+pathmunge "/Users/doug/.rvm/bin"
+rvm use default
+
 # Java Settings ----------------------------------------------------------------
 #
 if [ $DEBUG_BASHRC == 1 ]; then echo "Skipping Java settings until I understand the mac better..."; fi
@@ -88,22 +92,8 @@ export ANT_OPTS="${ANT_OPTS} -DLicense.dir=${LICENSE_DIR}"
 export ANT_ARGS="-s build.xml"
 pathmunge ${ASSAULT_HOME}/ant/bin
 
-# PostgreSQL Settings ----------------------------------------------------------
-#
-if [ $DEBUG_BASHRC == 1 ]; then echo "Skipping PostgreSQL settings..."; fi
-#export PGSQL_HOME=/usr/local/pgsql-8.3.6
-#pathmunge ${PGSQL_HOME}/bin
 
-# CVS Settings -----------------------------------------------------------------
-#
-#if [ $DEBUG_BASHRC == 1 ]; then echo "CVS settings..."; fi
-#export CVSHOST=cvs.solipsys.com
-#export CVSDIR=/cvs
-#export CVSROOT=:ext:${USER}@${CVSHOST}:${CVSDIR}
-#export CVS_RSH=ssh
-
-
-# Git settings -------------------------------------------------------------
+# Git settings -----------------------------------------------------------------
 #
 #export GIT_HOME=/cygdrive/c/Git
 #pathmunge ${GIT_HOME}/bin after
@@ -114,6 +104,22 @@ if [ $DEBUG_BASHRC == 1 ]; then echo "Skipping PostgreSQL settings..."; fi
 #pathmunge ${MYSQL_HOME}/bin after
 #ldpathmunge ${MYSQL_HOME}/lib after
 
+# SML/NJ Settings --------------------------------------------------------------
+#
+pathmunge /usr/local/smlnj-110.75/bin after
+
+# PostgreSQL Settings ----------------------------------------------------------
+#
+#if [ $DEBUG_BASHRC == 1 ]; then echo "Skipping PostgreSQL settings..."; fi
+export PGSQL_HOME=/Applications/Postgres.app/Contents/MacOS
+pathmunge ${PGSQL_HOME}/bin
+
+# Android Development Kit Settings ---------------------------------------------
+#
+if [ $DEBUG_BASHRC == 1 ]; then echo "ADK settings..."; fi
+export ADT_HOME=$HOME/Documents/dev/adt-bundle-mac-x86_64-20130219
+pathmunge ${ADT_HOME}/sdk/platform-tools after
+
 # CDPATH Definitions -----------------------------------------------------------
 #
 if [ $DEBUG_BASHRC == 1 ]; then echo "CDPATH settings..."; fi
@@ -121,7 +127,6 @@ export CDPATH=.
 export CDPATH=${CDPATH}:${WORK}
 export CDPATH=${CDPATH}:${RAILSDEV}
 export CDPATH=${CDPATH}:${GENDEV}
-
 
 
 # Personal Config --------------------------------------------------------------
@@ -153,6 +158,7 @@ alias m='less'
 alias goro="sudo su -"
 alias gopg="sudo su - postgres"
 alias goaws='ssh -i /Users/doug/Documents/dev/DougPrice.pem ubuntu@ec2-107-22-99-76.compute-1.amazonaws.com'
+alias goal='ssh deploy.aws.com'
 
 alias psg="ps -ef | grep "
 alias ep='echo $PATH | tr ":" "\n" '
@@ -165,7 +171,14 @@ alias httpd='python -m SimpleHTTPServer 8090'
 #alias cvss='cvs status | grep Status'
 #alias cvsu="cvs -n update 2>&1 | grep -v 'update' | grep -v 'cvs server'"
 
+alias vi='mvim'
+
 alias gs='git status'
+alias gl='git log'
+
+alias rr='rake routes'
+alias rrg='rake routes | grep'
+alias ti='ruby -Itest '
 
 alias tree='tree | less'
 alias sql3='sqlite3 db/development.sqlite3'
