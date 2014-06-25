@@ -46,3 +46,27 @@ filetype plugin indent on
 
 let mapleader = ","
 nnoremap <silent> <Leader>b :TagbarToggle<CR>
+
+" Save LOTS of history!
+set history=500
+
+" Uncomment the following to have Vim jump to the last position when
+" reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal! g'\"" | endif
+endif
+
+" In MacVim, you can have multiple tabs open. This mapping makes
+" ctrl-tab switch between them, like browser tabs.
+" I don't think it matters whether I use noremap or map, unless
+" :tabnext gets bound to something else, which would be weird.
+noremap <c-tab> :tabnext<cr>
+
+" Jump to the tag under the cursor when the tag is double clicked
+"   from: http://vim.wikia.com/wiki/Mapping_keys_in_Vim_-_Tutorial_(Part_1)
+:nnoremap <2-LeftMouse> :exe "tag ". expand("<cword>")<CR>
+
+" Regenerate ctags, including gems
+"   from: http://stackoverflow.com/questions/4539265/regenerate-ctags-in-vim-using-rvm
+map <Leader>rt :!/usr/local/bin/ctags --language-force=ruby --exclude=.git --exclude=log -R * `bundle show --paths`

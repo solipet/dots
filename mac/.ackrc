@@ -1,0 +1,3 @@
+# full documentation at http://betterthangrep.com/documentation/
+--ignore-dir=coverage
+--ignore-dir=tmp

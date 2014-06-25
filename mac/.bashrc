@@ -52,12 +52,14 @@ ldpathmunge () {
 if [ $DEBUG_BASHRC == 1 ]; then echo "Work settings..."; fi
 export GENDEV=${HOME}/Documents/dev
 export RAILSDEV=${HOME}/Documents/dev/rails
+export COURSERA=${HOME}/Documents/Courses/AlgorithmsII/assignments
 
 export ALCHEMEEDEV=${HOME}/Documents/Alchemee/dev
+export FRACTOGRAFDEV=${HOME}/Documents/Fractograf/dev
 
 if [ "foo$WORK" == "foo" ]
 then
-  export WORK=${ALCHEMEEDEV}
+  export WORK=${FRACTOGRAFDEV}
 fi
 
 # RVM Settings -----------------------------------------------------------------
@@ -65,9 +67,24 @@ fi
 pathmunge "/Users/doug/.rvm/bin"
 rvm use default
 
+# AWS Settings -----------------------------------------------------------------
+#
+export AWS_ACCESS_KEY=
+export AWS_SECRET_KEY=
+export AWS_REGION='us-east-1'
+
+export EC2_HOME=${HOME}/Applications/ec2-api-tools
+export AWS_CLOUDWATCH_HOME=${HOME}/Applications/CloudWatch
+export AWS_CREDENTIAL_FILE=${AWS_CLOUDWATCH_HOME}/credential-file-path
+
+pathmunge ${EC2_HOME}/bin
+pathmunge ${AWS_CLOUDWATCH_HOME}/bin
+
 # Java Settings ----------------------------------------------------------------
 #
 if [ $DEBUG_BASHRC == 1 ]; then echo "Skipping Java settings until I understand the mac better..."; fi
+export JAVA_HOME=`/usr/libexec/java_home`
+
 #export JAVA_ROOT=/cygdrive/c/Progra~1/Java/jdk1.6.0_23
 #export JAVA_HOME=${JAVA_ROOT}
 #export JAVA_HOME_W32=`/bin/cygpath -m $JAVA_HOME `
@@ -111,7 +128,7 @@ pathmunge /usr/local/smlnj-110.75/bin after
 # PostgreSQL Settings ----------------------------------------------------------
 #
 #if [ $DEBUG_BASHRC == 1 ]; then echo "Skipping PostgreSQL settings..."; fi
-export PGSQL_HOME=/Applications/Postgres.app/Contents/MacOS
+export PGSQL_HOME=/Applications/Postgres93.app/Contents/MacOS
 pathmunge ${PGSQL_HOME}/bin
 
 # Android Development Kit Settings ---------------------------------------------
@@ -127,6 +144,7 @@ export CDPATH=.
 export CDPATH=${CDPATH}:${WORK}
 export CDPATH=${CDPATH}:${RAILSDEV}
 export CDPATH=${CDPATH}:${GENDEV}
+export CDPATH=${CDPATH}:${COURSERA}
 
 
 # Personal Config --------------------------------------------------------------
@@ -139,6 +157,9 @@ umask 022
 # Don't auto-complete CVS directories
 export FIGNORE='\~:CVS:.class:.o'
 export fignore='\~:CVS:.class:.o'
+
+# Tell ack to page output (doesn't work in .ackrc!!?)
+export ACK_PAGER='less -R'
 
 # Change the ls colors so that directories are white (i.e., NOT BLUE)
 
@@ -158,7 +179,11 @@ alias m='less'
 alias goro="sudo su -"
 alias gopg="sudo su - postgres"
 alias goaws='ssh -i /Users/doug/Documents/dev/DougPrice.pem ubuntu@ec2-107-22-99-76.compute-1.amazonaws.com'
-alias goal='ssh deploy.aws.com'
+alias goal='ssh alchemee@dev.solipet.me'
+#alias goff='ssh fractograf@dev.solipet.me'
+alias goff='ssh ff-dev'
+alias goapi='ssh ff-api'
+alias gome='ssh dev.solipet.me'
 
 alias psg="ps -ef | grep "
 alias ep='echo $PATH | tr ":" "\n" '
@@ -167,25 +192,29 @@ alias el='echo $LD_LIBRARY_PATH | tr ":" "\n" '
 alias ant="ant notest"
 
 alias httpd='python -m SimpleHTTPServer 8090'
+alias post='curl -X POST -H "Content-Type application/json" '
 
 #alias cvss='cvs status | grep Status'
 #alias cvsu="cvs -n update 2>&1 | grep -v 'update' | grep -v 'cvs server'"
 
 alias vi='mvim'
 
+alias androiddebug='adb forward tcp:9222 localabstract:chrome_devtools_remote'
+
 alias gs='git status'
 alias gl='git log'
 
-alias rr='rake routes'
-alias rrg='rake routes | grep'
-alias ti='ruby -Itest '
+alias rake='bundle exec rake '
+alias rr='bundle exec rake routes'
+alias rrg='bundle exec rake routes | grep'
+alias ti='bundle exec rake db:test:prepare; bundle exec rake n10n:db:test:prepare; ruby -Itest '
+alias cap='time bundle exec cap'
 
-alias tree='tree | less'
+alias tl='tree | less'
 alias sql3='sqlite3 db/development.sqlite3'
 alias sql3l='sqlite3 -line db/development.sqlite3'
 
-# Change work environment
-alias wa="export WORK=$ALCHEMEEWORK ; . ~/.bashrc"
+#sudo netstat -ltnp | grep ':80'
 
 
 # PROMPT ----------------------------------------------------------------------
@@ -245,3 +274,6 @@ WHITE="\[\033[0;37m\]"
 DARK_GREEN="\[\033]0;\w\007\033[32m\]"
 
 
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
