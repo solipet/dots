@@ -70,7 +70,9 @@ rvm use default
 # AWS Settings -----------------------------------------------------------------
 #
 export AWS_ACCESS_KEY=
+export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
 export AWS_SECRET_KEY=
+export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
 export AWS_REGION='us-east-1'
 
 export EC2_HOME=${HOME}/Applications/ec2-api-tools
@@ -277,3 +279,162 @@ DARK_GREEN="\[\033]0;\w\007\033[32m\]"
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+
+# Allows for pulling from the ff production or development DBs. Relies on
+# the passwords being set in $HOME/.pgpass.
+#
+ffpg()
+{
+  FFDDIR="$HOME/.ff-dumps"
+  PGDBNM="fractograf"
+  PGUSER="fractograf"
+  PGPORT=5432
+  PGHOST=
+
+  [ ! -d $FFDDIR ] && mkdir $FFDDIR
+
+  case ${1} in
+    "local")
+      PGHOST="localhost"
+      PGDBNM="ff_dev"
+      ;;
+
+    "dev")
+      PGHOST="oregon1.ci3oznfwv2lb.us-west-2.rds.amazonaws.com"
+      PGDBNM="ff_dev"
+      ;;
+    "prd")
+      PGHOST="ff-v-1-1.cuydb2g2fkq6.us-east-1.rds.amazonaws.com"
+      ;;
+    *)
+      PGDBNM=
+      PGHOST=
+      printf "\nUsage: ffdb <dev|prd|local>\n\n"
+      return 1
+      ;;
+  esac
+}
+
+ffpull()
+{
+  ffpg ${1}; [ $? != 0 ] && return 1
+
+  PGFILE="${FFDDIR}/${1}-`date +\"%Y%m%d-%H%M%S\"`"
+
+  printf "Host $PGHOST\n  DB $PGDBNM\n  To $PGFILE\n"
+  pg_dump --host $PGHOST     --port $PGPORT \
+          --username $PGUSER --role $PGUSER \
+          --format=d --compress 9           \
+          --file "$PGFILE" $PGDBNM
+
+  rm -f $FFDDIR/${1}; ln -s $PGFILE $FFDDIR/${1}
+}
+
+ffpush()
+{
+  if [ ! $# == 2 ];
+  then
+    printf "Usage: ffpush <local|dev|prd> <local|dev>\n"
+    return 1
+  fi
+
+  case ${2} in
+    "prd")
+      printf "Usage: ffpush <local|dev|prd> <local|dev>\n"
+      printf "I seriously doubt you mean to push to production, not doin it.\n"
+      return 2
+      ;;
+  esac
+
+  # Qualify the source param
+  #
+  ffpg ${1}; [ $? != 0 ] && return 1
+
+  # Qualify the target param
+  #
+  ffpg ${2}; [ $? != 0 ] && return 1
+
+  PGFILE="${FFDDIR}/${1}/"
+
+  printf "Host $PGHOST\n  DB $PGDBNM\nPush $PGFILE\n"
+  pg_restore -c -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDBNM -W $PGFILE
+}
+
+# Allows for deployment of a single file to either the production or development instances.
+#
+ffhosts()
+{
+
+  case ${1} in
+    "dev")
+      PGHOSTS="ff-or-api-setup"
+      ;;
+    "prd")
+      PGHOSTS="ff-www-deploy ff-api-prd-01 ff-api-prd-02 ff-www-prd-01 ff-www-prd-02"
+      ;;
+    "prd-deploy")
+      PGHOSTS="ff-www-deploy"
+      ;;
+    *)
+      PGHOSTS=""
+      printf "\nUsage: ffhosts <dev|prd|prd-deploy>\n\n"
+      return 1
+      ;;
+  esac
+}
+
+ffdeploy()
+{
+  if [ $# -lt 3 ];
+  then
+    printf "Usage: ffdeploy <dev|prd|prd-deploy> <file> <dest_dir> <conf?>\n"
+    return 1
+  fi
+  FFFILE=${2}
+  FFDEST=${3}
+  FFCONF="false"
+  if [ $# -gt 3 ]
+  then
+    FFCONF=${4}
+  fi
+  
+  ffhosts ${1}; [ $? != 0 ] && return 1
+
+  for host in ${PGHOSTS}
+  do
+    echo "scp ${FFFILE} ${host}:${FFDEST}"
+          scp ${FFFILE} ${host}:${FFDEST}
+    if [ "true" == $FFCONF ]
+    then
+      echo "scp ${FFFILE} ${host}:/ebs/ff_web/conf/fractograf/${FFFILE}"
+            scp ${FFFILE} ${host}:/ebs/ff_web/conf/fractograf/${FFFILE}
+    fi
+  done
+}
+
+s3deploy()
+{
+  if [ ! $# == 3 ];
+  then
+    printf "Usage: ffdeploy <dev|prd> <file> <dest_dir>\n"
+    return 1
+  fi
+  case ${1} in
+    "dev")
+      S3BUCKET="fractograf-dev"
+      ;;
+    "prd")
+      S3BUCKET="fractograf"
+      ;;
+    *)
+      S3BUCKET=""
+      printf "\nUsage: s3deploy <dev|prd> <file> <dest_dir>\n\n"
+      return 2
+      ;;
+  esac
+  FFFILE=${2}
+  FFDEST=${3}
+
+  aws s3 cp ${FFFILE} s3://${S3BUCKET}/${FFDEST}/${FFFILE} --acl public-read
+}
