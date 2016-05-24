@@ -1,0 +1,72 @@
+export DEBUG_BASHRC=0
+
+# Set Prompt
+
+[[ $DEBUG_BASHRC = 1 ]] && echo "Loading prompt"
+[[ -f "$HOME/.bash_prompt" ]] && source "$HOME/.bash_prompt"
+
+# Load things
+[[ $DEBUG_BASHRC = 1 ]] && echo "Loading aliases"
+[[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
+
+[[ $DEBUG_BASHRC = 1 ]] && echo "Loading functions"
+[[ -f "$HOME/.functions" ]] && source "$HOME/.functions"
+
+# Set $PATH
+
+[[ $DEBUG_BASHRC = 1 ]] && echo "Setting PATH"
+export PATH="/usr/local/bin"
+export PATH=${PATH}:"/usr/bin"
+export PATH=${PATH}:"/bin"
+export PATH=${PATH}:"/usr/sbin"
+export PATH=${PATH}:"/sbin"
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+[[ -d "$HOME/.bin" ]] && export PATH=$HOME/.bin:$PATH
+export PATH=${PATH}:"."
+
+# Locale
+[[ $DEBUG_BASHRC = 1 ]] && echo "Setting Locale"
+export LC_ALL=en_US.UTF-8  
+export LANG=en_US.UTF-8
+
+# Misc settings
+[[ $DEBUG_BASHRC = 1 ]] && echo "Setting Misc"
+umask 022
+export FIGNORE='\~:.class:.o'
+export fignore='\~:.class:.o'
+export EDITOR=vim
+
+# Tell ack to page output (doesn't work in .ackrc!!?)
+export ACK_PAGER='less -R'
+
+# PostgreSQL
+[[ $DEBUG_BASHRC = 1 ]] && echo "Setting PostgreSQL"
+export PGSQL_HOME=/Applications/Postgres.app/Contents/Versions/9.4
+pathmunge ${PGSQL_HOME}/bin
+
+# Android Development Kit Settings
+#
+[[ $DEBUG_BASHRC = 1 ]] && echo "ADK settings..."
+export ADT_HOME=$HOME/Documents/dev/adt-bundle-mac-x86_64-20130219
+#pathmunge ${ADT_HOME}/sdk/platform-tools after
+
+# rbenv
+[[ $DEBUG_BASHRC = 1 ]] && echo "Setting rbenv"
+if [ -d "$HOME/.rbenv/bin" ] ; then 
+  export PATH="$HOME/.rbenv/bin":$PATH
+  eval "$(rbenv init -)"
+fi
+
+# rvm
+[[ $DEBUG_BASHRC = 1 ]] && echo "Setting rvm"
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+# Load project settings
+[[ $DEBUG_BASHRC = 1 ]] && echo "Loading projects"
+if [ -d "$HOME/.projects" ] ; then
+  for file in `find $HOME/.projects -type f -name \*.conf` ; do
+    source $file
+  done
+  source $HOME/.projects/default
+fi

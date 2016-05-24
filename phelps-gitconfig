@@ -1,0 +1,59 @@
+[user]
+	name = John Phelps
+	email = john.phelps@solipsys.com
+[color]
+        ui = auto
+	interactive = auto
+[color "branch"]
+        current = yellow reverse
+        local = yellow
+        remote = green
+[color "diff"]
+        meta = yellow bold
+        frag = magenta bold
+        old = red bold
+[color "status"]
+        added = green
+        changed = yellow
+	untracked = red reverse
+[branch]
+	autosetuprebase = always
+[alias]
+        co   = checkout -p
+        cob  = checkout -b
+        go   = checkout
+
+        br   = branch
+        brd  = branch -d
+        brD  = branch -D
+        brr  = branch -r
+        ci   = commit
+        civ  = commit -v
+        cig  = gui citool
+        cp   = cherry-pick
+        cldx = clean -f -d -x
+        df   = diff
+        ds   = diff --staged
+        fep  = fetch --prune
+        logl = log --pretty=oneline --abbrev-commit
+        logs = log --stat
+        lola = log --graph --decorate --pretty=oneline --abbrev-commit --branches --remotes --tags
+        lolb = log --graph --decorate --pretty=oneline --abbrev-commit --all
+        lol  = log --graph --decorate --pretty=oneline --abbrev-commit
+        lp   = log -p
+        mff  = merge --ff-only
+        setr = remote set-url origin
+        st   = status -s -b
+
+        alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\t=> \\2/' | sort
+[core]
+	autocrlf = false
+[diff]
+	tool = vimdiff
+	algorithm = minimal
+	renames = copies
+	mnemonicprefix = true
+[push]
+	default = simple
+[url "https://"]
+	insteadOf = git://

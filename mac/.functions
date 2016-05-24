@@ -1,0 +1,40 @@
+# pathmunge -------------------------------------------------------------------
+#
+# Stolen from /etc/profile on RedHat Linux
+# Used to add stuff to your path, but it 
+# won't add it if it's already there.
+pathmunge () {
+  # echo "  MUNGE: $1 $2"
+  # echo "if [ ! \`echo $PATH | egrep -s \"(^|:)$1($|:)\"\` ] ; then"
+  if [ ! `echo $PATH | egrep -s "(^|:)$1($|:)"` ] ; then
+    # echo "    trace 1"
+    if [ "$2" == "after" ] ; then
+       # echo "    trace 2"
+      PATH=$PATH:$1
+    else
+       # echo "    trace 3"
+      PATH=$1:$PATH
+    fi
+  fi
+}
+
+# ldpathmunge -------------------------------------------------------------------
+#
+# Used to add stuff to your library path, but it 
+# won't add it if it's already there.
+ldpathmunge () {
+  # echo "  MUNGE: $1 $2"
+  # echo "if [ ! \`echo $LD_LIBRARY_PATH | egrep -s \"(^|:)$1($|:)\"\` ] ; then"
+  if [ ! `echo $LD_LIBRARY_PATH | egrep -s "(^|:)$1($|:)"` ] ; then
+    # echo "    trace 1"
+    if [ "$2" == "after" ] ; then
+       # echo "    trace 2"
+      LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-"/usr/local/lib"}:$1
+    else
+       # echo "    trace 3"
+      LD_LIBRARY_PATH=$1:${LD_LIBRARY_PATH:-"/usr/local/lib"}
+    fi
+  fi
+}
+
+

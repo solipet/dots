@@ -72,7 +72,7 @@ hi Underlined   gui=underline guifg=SteelBlue1
 
 if &background == "dark"
   hi Boolean      gui=bold guifg=DodgerBlue4 guibg=NONE
-  hi Comment      gui=italic guifg=Gray20
+  hi Comment      gui=italic guifg=Gray30
   hi Constant     gui=NONE guifg=Goldenrod1 guibg=NONE
   hi Cursor       guibg=LightGoldenrod guifg=bg
   hi CursorColumn guibg=Gray20

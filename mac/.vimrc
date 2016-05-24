@@ -71,3 +71,7 @@ noremap <c-tab> :tabnext<cr>
 " Regenerate ctags, including gems
 "   from: http://stackoverflow.com/questions/4539265/regenerate-ctags-in-vim-using-rvm
 map <Leader>rt :!/usr/local/bin/ctags --language-force=ruby --exclude=.git --exclude=log -R * `bundle show --paths`
+
+set laststatus=2
+
+cmap w!! w !sudo tee > /dev/null %

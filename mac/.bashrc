@@ -56,6 +56,12 @@ export COURSERA=${HOME}/Documents/Courses/AlgorithmsII/assignments
 
 export ALCHEMEEDEV=${HOME}/Documents/Alchemee/dev
 export FRACTOGRAFDEV=${HOME}/Documents/Fractograf/dev
+export RAILS_ENV_ABBREV=dev
+export RAILS_APP=fractograf
+export RAILS_ROLE=www
+export RAILS_SECRET_KEY_BASE='4c8bde8d56b4e9a37621bdb3392ddc993f79794f59bcd90f8df6f5c5abb57c5d6db1ff18c0e3adb2b5e5636da02ddffc58544a3f3846f7289ec0243db83f8be9'
+export RAILS_AUTH_SECRET_KEY_BASE='86847ea5555389919b0f9648cc1092ae0a6bfc037be2debd6544e5e4cdb803ec'
+export ANNOTATION=DCP
 
 if [ "foo$WORK" == "foo" ]
 then
@@ -69,9 +75,9 @@ rvm use default
 
 # AWS Settings -----------------------------------------------------------------
 #
-export AWS_ACCESS_KEY=
+export AWS_ACCESS_KEY=AKIAJWQ5ZKZAPNG7D3BA
 export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY
-export AWS_SECRET_KEY=
+export AWS_SECRET_KEY=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
 export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY
 export AWS_REGION='us-east-1'
 
@@ -94,9 +100,9 @@ export JAVA_HOME=`/usr/libexec/java_home`
 
 # Assault Settings -------------------------------------------------------------
 #
-if [ $DEBUG_BASHRC == 1 ]; then echo "Assault settings..."; fi
-export ASSAULT_HOME=${WORK}/assault/release
-pathmunge ${ASSAULT_HOME}/bin
+#if [ $DEBUG_BASHRC == 1 ]; then echo "Assault settings..."; fi
+#export ASSAULT_HOME=${WORK}/assault/release
+#pathmunge ${ASSAULT_HOME}/bin
 
 # Ant Definitions (common) -----------------------------------------------------
 #
@@ -130,7 +136,8 @@ pathmunge /usr/local/smlnj-110.75/bin after
 # PostgreSQL Settings ----------------------------------------------------------
 #
 #if [ $DEBUG_BASHRC == 1 ]; then echo "Skipping PostgreSQL settings..."; fi
-export PGSQL_HOME=/Applications/Postgres93.app/Contents/MacOS
+#export PGSQL_HOME=/Applications/Postgres93.app/Contents/MacOS
+export PGSQL_HOME=/Applications/Postgres.app/Contents/Versions/9.4
 pathmunge ${PGSQL_HOME}/bin
 
 # Android Development Kit Settings ---------------------------------------------
@@ -148,6 +155,13 @@ export CDPATH=${CDPATH}:${RAILSDEV}
 export CDPATH=${CDPATH}:${GENDEV}
 export CDPATH=${CDPATH}:${COURSERA}
 
+# Baltimore Public Art Commons Settings ----------------------------------------
+#
+export bpac_secret_key_base='c8d6c70eb92d43ff2597ecd72ce44a0d536ad9e12ff9d040fdba2e399ca0379672b3fc5cd033414f4dcf4c3fe53aa0351c379d895a4b54aae0dd29a9ebda199b'
+
+# PKG_CONFIG_PATH --------------------------------------------------------------
+
+export PKG_CONFIG_PATH=/opt/local/lib/pkgconfig
 
 # Personal Config --------------------------------------------------------------
 #
@@ -178,9 +192,12 @@ alias po='popd'
 alias rm='/bin/rm -i'
 alias m='less'
 
+alias ffh='ssh -F $HOME/.ssh/config-ff'
 alias goro="sudo su -"
 alias gopg="sudo su - postgres"
 alias goaws='ssh -i /Users/doug/Documents/dev/DougPrice.pem ubuntu@ec2-107-22-99-76.compute-1.amazonaws.com'
+alias ymstat='ssh fractograf@stg-ym-api-01 "./get_stats.sh"'
+alias ustat='ssh fractograf@stg-ym-api-01 "./get_user_stats.sh"'
 alias goal='ssh alchemee@dev.solipet.me'
 #alias goff='ssh fractograf@dev.solipet.me'
 alias goff='ssh ff-dev'
@@ -193,6 +210,7 @@ alias el='echo $LD_LIBRARY_PATH | tr ":" "\n" '
 
 alias ant="ant notest"
 
+alias run_redis='redis-server /usr/local/etc/redis.conf &'
 alias httpd='python -m SimpleHTTPServer 8090'
 alias post='curl -X POST -H "Content-Type application/json" '
 
@@ -209,13 +227,14 @@ alias gl='git log'
 alias rake='bundle exec rake '
 alias rr='bundle exec rake routes'
 alias rrg='bundle exec rake routes | grep'
-alias ti='bundle exec rake db:test:prepare; bundle exec rake n10n:db:test:prepare; ruby -Itest '
+#alias ti='bundle exec rake db:test:prepare; bundle exec rake n10n:db:test:prepare; ruby -Itest '
 alias cap='time bundle exec cap'
 
 alias tl='tree | less'
 alias sql3='sqlite3 db/development.sqlite3'
 alias sql3l='sqlite3 -line db/development.sqlite3'
 
+alias bpac='cd ${HOME}/Documents/dev/bpac; rails server -p 4000'
 #sudo netstat -ltnp | grep ':80'
 
 
@@ -336,6 +355,7 @@ ffpush()
   if [ ! $# == 2 ];
   then
     printf "Usage: ffpush <local|dev|prd> <local|dev>\n"
+    printf "  aka: ffpush from to"
     return 1
   fi
 
@@ -407,9 +427,28 @@ ffdeploy()
           scp ${FFFILE} ${host}:${FFDEST}
     if [ "true" == $FFCONF ]
     then
-      echo "scp ${FFFILE} ${host}:/ebs/ff_web/conf/fractograf/${FFFILE}"
-            scp ${FFFILE} ${host}:/ebs/ff_web/conf/fractograf/${FFFILE}
+      echo "scp ${FFFILE} ${host}:/ebs/ff_web/conf/fractograf/"
+            scp ${FFFILE} ${host}:/ebs/ff_web/conf/fractograf/
     fi
+  done
+  unset FFFILE
+}
+
+ffrun()
+{
+  if [ $# -lt 2 ];
+  then
+    printf "Usage: ffrun <dev|prd|prd-deploy> <command>\n"
+    return 1
+  fi
+  CMD=${2}
+  
+  ffhosts ${1}; [ $? != 0 ] && return 1
+
+  for host in ${PGHOSTS}
+  do
+    echo "ssh ${host} \"${CMD}\""
+          ssh ${host}  "${CMD}"
   done
 }
 
@@ -438,3 +477,42 @@ s3deploy()
 
   aws s3 cp ${FFFILE} s3://${S3BUCKET}/${FFDEST}/${FFFILE} --acl public-read
 }
+
+featured_deploy()
+{
+  if [ $# == 0 ];
+  then
+    printf "\nUsage: featured_deploy <dev|prd>\n\n"
+    return 1
+  else
+    DEPLOY_ENV=$1
+  fi
+  if [ $DEPLOY_ENV -eq "prd" ];
+  then
+    DEPLOY_ENV="prod"
+  fi
+
+  git add featured.json.${DEPLOY_ENV};               [ $? != 0 ] && return 1
+  git commit -m "updates to ${DEPLOY_ENV} featured"; [ $? != 0 ] && return 1
+  git push origin featured;                          [ $? != 0 ] && return 1
+  ./featured-${DEPLOY_ENV}-deploy;                   [ $? != 0 ] && return 1
+}
+
+# run a test from the application root
+ti()
+{
+  export RAILS_ENV=test
+  if [ $# == 0 ];
+  then
+    printf "\nUsage: ti test/integration/YOUR_TEST_HERE.rb [-n /pattern/]\n\n"
+    return 1
+  fi
+  pushd ${WORK}/ff_web
+  bundle exec rake db:test:prepare
+  bundle exec rake n10n:db:test:prepare
+  echo "ruby -Itest $@"
+  ruby -Itest "$@"
+  popd
+  unset RAILS_ENV
+}
+
