@@ -65,7 +65,7 @@ fi
 # Load project settings
 [[ $DEBUG_BASHRC = 1 ]] && echo "Loading projects"
 if [ -d "$HOME/.projects" ] ; then
-  for file in `find $HOME/.projects -type f -name \*.conf` ; do
+  for file in `find $HOME/.projects/enabled -type f -name \*.conf` ; do
     source $file
   done
   source $HOME/.projects/default
