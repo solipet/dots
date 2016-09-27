@@ -15,11 +15,13 @@ alias tl='tree | less'
 # Development ------------------------------------------------------------------
 
 alias vi='mvim'
+alias sbl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias gs='git status'
 alias gl='git log'
 alias rake='bundle exec rake '
 alias rr='bundle exec rake routes'
 alias rrg='bundle exec rake routes | grep'
+alias spec='bundle exec rake spec'
 alias cap='time bundle exec cap'
 alias sql3='sqlite3 db/development.sqlite3'
 alias sql3l='sqlite3 -line db/development.sqlite3'
@@ -33,7 +35,5 @@ alias androiddebug='adb forward tcp:9222 localabstract:chrome_devtools_remote'
 
 alias goro="sudo su -"
 alias gopg="sudo su - postgres"
-alias goaws='ssh -i /Users/doug/Documents/dev/DougPrice.pem ubuntu@ec2-107-22-99-76.compute-1.amazonaws.com'
-alias goal='ssh alchemee@dev.solipet.me'
 alias gome='ssh dev.solipet.me'
 
