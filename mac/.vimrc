@@ -58,6 +58,13 @@ if has("autocmd")
     \| exe "normal! g'\"" | endif
 endif
 
+" Strip trailing whitespaces and keep new line at the end of file
+" https://gist.github.com/jandudulski/4451806
+if has("autocmd")
+  " remove trailing white spaces
+  autocmd BufWritePre * :%s/\s\+$//e
+endif
+
 " In MacVim, you can have multiple tabs open. This mapping makes
 " ctrl-tab switch between them, like browser tabs.
 " I don't think it matters whether I use noremap or map, unless
