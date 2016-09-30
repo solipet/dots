@@ -33,7 +33,7 @@ fi
 # Install brews
 #
 echo "installing brews"
-BREWS="ack bash ctags dos2unix gpg tmux tree"
+BREWS="ack bash ctags dos2unix gpg tmux tree graphviz"
 for BREW in ${BREWS}; do
   if [ ! -h /usr/local/bin/$BREW ]
   then
@@ -47,7 +47,7 @@ done
 if [ ! -h /usr/local/bin/mvim ]
 then
   echo "    installing macvim"
-  brew install macvim 
+  brew install macvim
 else
   echo "    macvim already installed"
 fi
@@ -55,7 +55,7 @@ fi
 if [ ! -h /usr/local/bin/redis-cli ]
 then
   echo "    installing redis"
-  brew install redis 
+  brew install redis
 else
   echo "    redis already installed"
 fi
