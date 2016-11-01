@@ -27,7 +27,7 @@ export PATH=${PATH}:"."
 
 # Locale
 [[ $DEBUG_BASHRC = 1 ]] && echo "Setting Locale"
-export LC_ALL=en_US.UTF-8  
+export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # Misc settings
@@ -42,7 +42,7 @@ export ACK_PAGER='less -R'
 
 # PostgreSQL
 [[ $DEBUG_BASHRC = 1 ]] && echo "Setting PostgreSQL"
-export PGSQL_HOME=/Applications/Postgres.app/Contents/Versions/9.4
+export PGSQL_HOME=/Applications/Postgres.app/Contents/Versions/9.5
 pathmunge ${PGSQL_HOME}/bin
 
 # Android Development Kit Settings
@@ -52,15 +52,20 @@ export ADT_HOME=$HOME/Documents/dev/adt-bundle-mac-x86_64-20130219
 #pathmunge ${ADT_HOME}/sdk/platform-tools after
 
 # rbenv
-[[ $DEBUG_BASHRC = 1 ]] && echo "Setting rbenv"
-if [ -d "$HOME/.rbenv/bin" ] ; then 
+[[ $DEBUG_BASHRC = 1 ]] && echo "Loading rbenv"
+if [ -d "$HOME/.rbenv/bin" ] ; then
   export PATH="$HOME/.rbenv/bin":$PATH
   eval "$(rbenv init -)"
 fi
 
 # rvm
-[[ $DEBUG_BASHRC = 1 ]] && echo "Setting rvm"
+[[ $DEBUG_BASHRC = 1 ]] && echo "Loading rvm"
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+# nvm
+[[ $DEBUG_BASHRC = 1 ]] && echo "Loading nvm"
+export NVM_DIR="$HOME/.nvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # Load project settings
 [[ $DEBUG_BASHRC = 1 ]] && echo "Loading projects"
@@ -70,3 +75,5 @@ if [ -d "$HOME/.projects" ] ; then
   done
   source $HOME/.projects/default
 fi
+
+source ~/.git-completion.bash
