@@ -2,13 +2,14 @@
 
 alias ep='echo $PATH | tr ":" "\n" '
 alias el='echo $LD_LIBRARY_PATH | tr ":" "\n" '
-alias psg="ps -ef | grep "
+alias ep='echo $PATH | tr ":" "\n" '
 alias la="ls -alF"
 alias ll="ls -lF"
+alias m='less'
 alias pd='pushd'
 alias po='popd'
+alias psg="ps -ef | grep "
 alias rm='/bin/rm -i'
-alias m='less'
 alias tl='tree | less'
 #sudo netstat -ltnp | grep ':80'
 
