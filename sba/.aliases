@@ -19,3 +19,8 @@ alias rake='bundle exec rake '
 alias rr='bundle exec rake routes'
 alias rrg='bundle exec rake routes | grep'
 alias spec='bundle exec rake spec'
+
+# Getting Around  --------------------------------------------------------------
+
+alias goapp='sudo su - app'
+alias goro='sudo su -'
