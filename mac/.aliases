@@ -1,6 +1,6 @@
 # General ----------------------------------------------------------------------
 
-alias ep='echo $PATH | tr ":" "\n" '
+alias ack='ack --type=nolog'
 alias el='echo $LD_LIBRARY_PATH | tr ":" "\n" '
 alias ep='echo $PATH | tr ":" "\n" '
 alias la="ls -alF"
@@ -23,6 +23,7 @@ alias rake='bundle exec rake '
 alias rr='bundle exec rake routes'
 alias rrg='bundle exec rake routes | grep'
 alias spec='bundle exec rake spec'
+alias kitchen='bundle exec kitchen '
 alias cap='time bundle exec cap'
 alias sql3='sqlite3 db/development.sqlite3'
 alias sql3l='sqlite3 -line db/development.sqlite3'
@@ -30,6 +31,8 @@ alias run_redis='redis-server /usr/local/etc/redis.conf &'
 alias httpd='python -m SimpleHTTPServer 8090'
 alias post='curl -X POST -H "Content-Type application/json" '
 alias androiddebug='adb forward tcp:9222 localabstract:chrome_devtools_remote'
+alias watch='notifyloop'
+alias fingerprint='ssh-keygen -lf ' # .ssh/id_rsa.pub
 #alias ti='bundle exec rake db:test:prepare; bundle exec rake n10n:db:test:prepare; ruby -Itest '
 
 # Going Places -----------------------------------------------------------------
@@ -38,3 +41,6 @@ alias goro="sudo su -"
 alias gopg="sudo su - postgres"
 alias gome='ssh dev.solipet.me'
 
+# Mac OS X ---------------------------------------------------------------------
+
+alias installed_applications="mdfind 'kMDItemContentTypeTree == com.apple.application' | sort"

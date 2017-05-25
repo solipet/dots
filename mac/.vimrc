@@ -82,3 +82,6 @@ map <Leader>rt :!/usr/local/bin/ctags --language-force=ruby --exclude=.git --exc
 set laststatus=2
 
 cmap w!! w !sudo tee > /dev/null %
+
+" inserts some debugging code to puts the caller.
+nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>

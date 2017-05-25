@@ -1,7 +1,7 @@
 # pathmunge -------------------------------------------------------------------
 #
 # Stolen from /etc/profile on RedHat Linux
-# Used to add stuff to your path, but it 
+# Used to add stuff to your path, but it
 # won't add it if it's already there.
 pathmunge () {
   # echo "  MUNGE: $1 $2"
@@ -20,7 +20,7 @@ pathmunge () {
 
 # ldpathmunge -------------------------------------------------------------------
 #
-# Used to add stuff to your library path, but it 
+# Used to add stuff to your library path, but it
 # won't add it if it's already there.
 ldpathmunge () {
   # echo "  MUNGE: $1 $2"
@@ -38,3 +38,23 @@ ldpathmunge () {
 }
 
 
+# latest -----------------------------------------------------------------------
+#
+# the next time you need to find the most recent file in your directory,
+# you just type `latest`
+#
+# if you want to run a command on that file, just type `latest <command>`
+function latest(){
+   A=(${@})
+   prog=$1;
+   #lat=$(find . -maxdepth 1 -type f -printf "%C@ %p\n" | sort | tail -n 1 | cut -d " " -f 2-)
+   lat=$(ls -tF | grep -v '/' | head -1)
+   if [ -z "$prog" ] ; then
+     echo $lat
+   elif [ ! -z $2 ] ; then
+     args=${A[@]:1};
+     $prog "${A[@]:1}" "$lat"
+   else
+     $prog $lat
+   fi
+}

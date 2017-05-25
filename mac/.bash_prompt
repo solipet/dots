@@ -29,14 +29,20 @@ parse_git_branch()
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \[\1\]/'
 }
 
+if [ "root" == `whoami` ]; then
+  USER_COLOR=$RED
+else
+  USER_COLOR=$DARK_GREEN
+fi
+
 build_prompt()
 {
   check_success
   gitBranch=$(parse_git_branch)
   if [ "$gitBranch" == " [(no branch)]" ]; then
-    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $DARK_GREEN\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w$BOLD_RED\$(parse_git_description)$BLACK\n\$ "
+    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $USER_COLOR\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w$BOLD_RED\$(parse_git_description)$BLACK\n\\$ "
   else
-    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $DARK_GREEN\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w$BOLD_GREEN\$(parse_git_branch)$BLACK\n\$ "
+    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $USER_COLOR\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w$BOLD_GREEN\$(parse_git_branch)$BLACK\n\\$ "
   fi
 }
 

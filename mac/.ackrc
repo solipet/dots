@@ -2,3 +2,5 @@
 --ignore-dir=coverage
 --ignore-dir=tmp
 --type-set=json=.json
+--type-set=geojson=.geojson
+--type-set=log=.log

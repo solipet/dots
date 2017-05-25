@@ -36,6 +36,7 @@ umask 022
 export FIGNORE='\~:.class:.o'
 export fignore='\~:.class:.o'
 export EDITOR=vim
+export HISTSIZE=5000
 
 # Tell ack to page output (doesn't work in .ackrc!!?)
 export ACK_PAGER='less -R'
