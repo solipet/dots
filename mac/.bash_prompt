@@ -29,6 +29,11 @@ parse_git_branch()
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \[\1\]/'
 }
 
+ruby_desc()
+{
+  ~/.rvm/bin/rvm-prompt u v
+}
+
 if [ "root" == `whoami` ]; then
   USER_COLOR=$RED
 else
@@ -40,9 +45,9 @@ build_prompt()
   check_success
   gitBranch=$(parse_git_branch)
   if [ "$gitBranch" == " [(no branch)]" ]; then
-    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $USER_COLOR\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w$BOLD_RED\$(parse_git_description)$BLACK\n\\$ "
+    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $USER_COLOR\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w $DARK_GREEN\$(ruby_desc) $BOLD_RED\$(parse_git_description)$BLACK\n⁖ "
   else
-    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $USER_COLOR\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w$BOLD_GREEN\$(parse_git_branch)$BLACK\n\\$ "
+    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $USER_COLOR\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w $DARK_GREEN\$(ruby_desc) $BOLD_GREEN\$(parse_git_branch)$BLACK\n⇰  "
   fi
 }
 
