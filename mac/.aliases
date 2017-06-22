@@ -11,6 +11,7 @@ alias po='popd'
 alias psg="ps -ef | grep "
 alias rm='/bin/rm -i'
 alias tl='tree | less'
+alias dad='echo; curl https://icanhazdadjoke.com/; echo'
 #sudo netstat -ltnp | grep ':80'
 
 # Development ------------------------------------------------------------------
