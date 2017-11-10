@@ -22,6 +22,8 @@ export PATH=${PATH}:"/usr/sbin"
 export PATH=${PATH}:"/sbin"
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+### Go!
+export PATH="/usr/local/go/bin:$PATH"
 [[ -d "$HOME/.bin" ]] && export PATH=$HOME/.bin:$PATH
 export PATH=${PATH}:"."
 

@@ -19,11 +19,13 @@ alias dad='echo; curl https://icanhazdadjoke.com/; echo'
 alias vi='mvim'
 alias sbl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias gs='git status'
-alias gl='git log'
+alias gl='git lola'
+alias packer='time packer '
 alias rake='bundle exec rake '
 alias rr='bundle exec rake routes'
 alias rrg='bundle exec rake routes | grep'
 alias spec='bundle exec rake spec'
+alias cspec="chef exec rspec | grep -v 'Chef 13' | grep -v 'Chef 14' | grep -v 'docs.chef.io/deprecations_attributes.html'"
 alias kitchen='bundle exec kitchen '
 alias cap='time bundle exec cap'
 alias sql3='sqlite3 db/development.sqlite3'
@@ -35,6 +37,9 @@ alias androiddebug='adb forward tcp:9222 localabstract:chrome_devtools_remote'
 alias watch='notifyloop'
 alias fingerprint='ssh-keygen -lf ' # .ssh/id_rsa.pub
 #alias ti='bundle exec rake db:test:prepare; bundle exec rake n10n:db:test:prepare; ruby -Itest '
+
+# AWS --------------------------------------------------------------------------
+#alias aws-whitelist="aws ec2 --profile local-credentials-profile-name authorize-security-group-ingress --group-id sg-1234abcd --protocol tcp --port 80 --cidr \`curl -s checkip.amazonaws.com\`/32; aws ec2 --profile local-credentials-profile-name authorize-security-group-ingress --group-id sg-abcd1234 --protocol tcp --port 443 --cidr \`curl -s checkip.amazonaws.com\`/32"
 
 # Going Places -----------------------------------------------------------------
 
