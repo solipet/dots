@@ -73,7 +73,7 @@ noremap <c-tab> :tabnext<cr>
 
 " Jump to the tag under the cursor when the tag is double clicked
 "   from: http://vim.wikia.com/wiki/Mapping_keys_in_Vim_-_Tutorial_(Part_1)
-:nnoremap <2-LeftMouse> :exe "tag ". expand("<cword>")<CR>
+" :nnoremap <2-LeftMouse> :exe "tag ". expand("<cword>")<CR>
 
 " Regenerate ctags, including gems
 "   from: http://stackoverflow.com/questions/4539265/regenerate-ctags-in-vim-using-rvm
@@ -85,3 +85,11 @@ cmap w!! w !sudo tee > /dev/null %
 
 " inserts some debugging code to puts the caller.
 nnoremap <leader>wtf oputs "#" * 90<c-m>puts caller<c-m>puts "#" * 90<esc>
+
+" Highlight all emdashes in red
+highlight Emdash ctermbg=red guibg=red
+match Emdash /–\+/
+autocmd BufWinEnter * match Emdash /–\+/
+autocmd InsertEnter * match Emdash /–\+\%#\@<!/
+autocmd InsertLeave * match Emdash /–\+/
+autocmd BufWinLeave * call clearmatches()

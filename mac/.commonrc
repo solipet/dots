@@ -6,6 +6,9 @@ export DEBUG_BASHRC=0
 [[ -f "$HOME/.bash_prompt" ]] && source "$HOME/.bash_prompt"
 
 # Load things
+[[ $DEBUG_BASHRC = 1 ]] && echo "Loading ls colors"
+[[ -f "$HOME/.bash_ls_colors" ]] && source "$HOME/.bash_ls_colors"
+
 [[ $DEBUG_BASHRC = 1 ]] && echo "Loading aliases"
 [[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
 
@@ -21,11 +24,13 @@ export PATH=${PATH}:"/bin"
 export PATH=${PATH}:"/usr/sbin"
 export PATH=${PATH}:"/sbin"
 ### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
+export PATH="${PATH}:/usr/local/heroku/bin"
 ### Go!
-export PATH="/usr/local/go/bin:$PATH"
+export PATH="${PATH}:/usr/local/go/bin"
 [[ -d "$HOME/.bin" ]] && export PATH=$HOME/.bin:$PATH
-export PATH=${PATH}:"."
+#export PATH=${PATH}:"."
+export WIFIWAND_HOME=/Users/doug/Documents/dev/wifiwand/exe
+[[ -d "$WIFIWAND_HOME" ]] && export PATH=${PATH}:$WIFIWAND_HOME
 
 # Locale
 [[ $DEBUG_BASHRC = 1 ]] && echo "Setting Locale"
@@ -45,8 +50,8 @@ export ACK_PAGER='less -R'
 
 # PostgreSQL
 [[ $DEBUG_BASHRC = 1 ]] && echo "Setting PostgreSQL"
-export PGSQL_HOME=/Applications/Postgres.app/Contents/Versions/9.5
-pathmunge ${PGSQL_HOME}/bin
+export PGSQL_HOME=/Applications/Postgres.app/Contents/Versions/9.6
+export PATH="${PATH}:${PGSQL_HOME}/bin"
 
 # Android Development Kit Settings
 #
@@ -55,11 +60,11 @@ export ADT_HOME=$HOME/Documents/dev/adt-bundle-mac-x86_64-20130219
 #pathmunge ${ADT_HOME}/sdk/platform-tools after
 
 # rbenv
-[[ $DEBUG_BASHRC = 1 ]] && echo "Loading rbenv"
-if [ -d "$HOME/.rbenv/bin" ] ; then
-  export PATH="$HOME/.rbenv/bin":$PATH
-  eval "$(rbenv init -)"
-fi
+#[[ $DEBUG_BASHRC = 1 ]] && echo "Loading rbenv"
+#if [ -d "$HOME/.rbenv/bin" ] ; then
+#  export PATH="$HOME/.rbenv/bin":$PATH
+#  eval "$(rbenv init -)"
+#fi
 
 # rvm
 [[ $DEBUG_BASHRC = 1 ]] && echo "Loading rvm"

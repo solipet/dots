@@ -1,6 +1,10 @@
 # full documentation at http://betterthangrep.com/documentation/
 --ignore-dir=coverage
+--ignore-dir=log
+--ignore-dir=node_modules
+--ignore-dir=public
 --ignore-dir=tmp
+--ignore-dir=vendor
 --type-set=json=.json
 --type-set=geojson=.geojson
 --type-set=log=.log

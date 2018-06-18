@@ -20,7 +20,9 @@ alias vi='mvim'
 alias sbl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 alias gs='git status'
 alias gl='git lola'
+alias changes='git diff --name-only `git show-branch --merge-base develop`'
 alias packer='time packer '
+alias dc='docker-compose '
 alias rake='bundle exec rake '
 alias rr='bundle exec rake routes'
 alias rrg='bundle exec rake routes | grep'
@@ -36,6 +38,7 @@ alias post='curl -X POST -H "Content-Type application/json" '
 alias androiddebug='adb forward tcp:9222 localabstract:chrome_devtools_remote'
 alias watch='notifyloop'
 alias fingerprint='ssh-keygen -lf ' # .ssh/id_rsa.pub
+alias ww='wifi-wand'
 #alias ti='bundle exec rake db:test:prepare; bundle exec rake n10n:db:test:prepare; ruby -Itest '
 
 # AWS --------------------------------------------------------------------------
