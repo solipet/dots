@@ -44,10 +44,12 @@ build_prompt()
 {
   check_success
   gitBranch=$(parse_git_branch)
-  if [ "$gitBranch" == " [(no branch)]" ]; then
+  if [ "$gitBranch" == "(no branch)" ]; then
     export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $USER_COLOR\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w $DARK_GREEN\$(ruby_desc) $BOLD_RED\$(parse_git_description)$BLACK\n⁖ "
+  elif [ "$gitBranch" == "" ]; then
+    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $USER_COLOR\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w $DARK_GREEN\$(ruby_desc) $BLACK\n⇰  "
   else
-    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $USER_COLOR\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w $DARK_GREEN\$(ruby_desc) $BOLD_GREEN[\$(parse_git_branch)]$BOLD_BLACK:$(parse_git_rev)$BLACK\n⇰  "
+    export PS1="\n($HIST_COLOR\!$BLACK) $CYAN\t $USER_COLOR\u$BLACK@$DARK_GREEN\h$BLACK:$CYAN\w $DARK_GREEN\$(ruby_desc) $BOLD_GREEN[$gitBranch]$BOLD_BLACK:$(parse_git_rev)$BLACK\n⇰  "
   fi
 }
 
