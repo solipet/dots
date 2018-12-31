@@ -53,6 +53,12 @@ export ACK_PAGER='less -R'
 export PGSQL_HOME=/Applications/Postgres.app/Contents/Versions/9.6
 export PATH="${PATH}:${PGSQL_HOME}/bin"
 
+# MySQL
+[[ $DEBUG_BASHRC = 1 ]] && echo "Setting MySQL"
+export MYSQL_HOME=/usr/local/mysql
+export PATH="${PATH}:${MYSQL_HOME}/bin"
+export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${MYSQL_HOME}/lib"
+
 # Android Development Kit Settings
 #
 [[ $DEBUG_BASHRC = 1 ]] && echo "ADK settings..."
