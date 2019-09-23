@@ -1,8 +1,8 @@
 " solipet colorscheme
 "
-" Maintainer: Doug Price <solipet@gmail.com> 
+" Maintainer: Doug Price <solipet@gmail.com>
 "
-" Based upon macvim but with a few tweaks for my color-blind eyes: 
+" Based upon macvim but with a few tweaks for my color-blind eyes:
 "
 
 
@@ -22,7 +22,7 @@ let colors_name = "solipet"
 
 " `:he highlight-groups`
 hi DiffAdd      guibg=MediumSeaGreen
-hi Directory    guifg=#1600FF
+hi Directory    guifg=#6455ff
 hi ErrorMsg     guibg=Firebrick2 guifg=White
 hi FoldColumn   guibg=Grey guifg=DarkBlue
 hi Folded       guibg=#E6E6E6 guifg=DarkBlue

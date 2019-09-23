@@ -27,6 +27,7 @@ abbreviate Transcieve Transceive
 
 set background=dark
 colorscheme solipet
+" colorscheme solarized
 
 " Highlight matches to the search
 set hlsearch

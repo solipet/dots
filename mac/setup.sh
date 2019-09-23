@@ -22,10 +22,12 @@ echo "TODO: download and install SizeUp from http://www.irradiatedsoftware.com/s
 # Download and configure Postgres.app
 #
 echo "TODO: download and install Postgres.app from http://postgresapp.com/"
+echo "      or install via: homebrew install postgresql"
 
 # Download and configure Redis.app
 #
 echo "TODO: download and install Redis.app from http://jpadilla.github.io/redisapp/"
+echo "      or install via: homebrew install redis"
 
 
 # Install homebrew
@@ -70,11 +72,12 @@ fi
 
 # Install rvm and some rubies
 #
+echo; echo
 echo "    installing rvm"
-RUBIES="2.5.1 2.6.0"
-DEFAULT_RUBY="2.5.1"
+RUBIES="2.5.5 2.6.0"
+DEFAULT_RUBY="2.5.5"
 RAILS="5.2.1"
-gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 \curl -sSL https://get.rvm.io | bash -s stable
 for RUBY in ${RUBIES}; do
   if [ ! -e ${HOME}/.rvm/rubies/ruby-${RUBY} ]
@@ -97,6 +100,21 @@ then
 else
   echo "    skip the install on rails for now"
 fi
+
+echo; echo
+
+# Install awslogs
+# https://github.com/jorgebastida/awslogs
+echo "    installing awslogs"
+pip install awslogs
+
+# Install aws-cft
+# https://github.com/USSBA/aws-cft-tools
+cd ~/Documents/dev
+git clone git@github.com:USSBA/aws-cft-tools
+cd aws-cft-tools
+bundle install
+bundle exec rake install
 
 # Set up non-work dev environment
 #

@@ -2,22 +2,30 @@
 	name = Douglas Price
 	email = dprice@fearless.tech
 [alias]
-	stll = log --graph --pretty=oneline --decorate --abbrev-commit
-	lol = log --graph --decorate --pretty=oneline --abbrev-commit
-	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  co    = checkout
+  ci    = commit
+  lola  = log --graph --abbrev-commit --decorate --date=short --format=format:'%C("#ffff00")%h%C(reset) - %C(cyan)%ad%C(reset) %C("#008800")(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset) %C("#aa55ff")%D%C(reset)' --all
+  pop   = stash pop
+  dev   = checkout develop
+  stg   = checkout staging
+  mas   = checkout master
+  sin   = push --force-with-lease
+  satan = push --force
+  clean-branches = "!f() { rm .git/refs/heads/dprice-* .git/refs/heads/jwagner-*; }; f"
 [core]
 	autocrlf = false
+  excludesfile = /Users/doug/.gitignore_global
 [push]
 	default = upstream
 [branch]
 	autosetuprebase = always
-[merge]
-	tool = kdiff3
-[mergetool "kdiff3"]
-	path = c:/Program Files/KDiff3/kdiff3.exe
-[diff]
-	guitool = kdiff3
-[difftool "kdiff3"]
-	path = c:/Program Files/KDiff3/kdiff3.exe
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[rebase]
+  instructionFormat = [%an @ %ar] %s
 [color]
 	ui = auto

@@ -1,0 +1,4 @@
+Control-K: kill-whole-line
+
+# don't keep discarded line edits in history
+set revert-all-at-newline on

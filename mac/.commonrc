@@ -54,10 +54,17 @@ export PGSQL_HOME=/Applications/Postgres.app/Contents/Versions/9.6
 export PATH="${PATH}:${PGSQL_HOME}/bin"
 
 # MySQL
-[[ $DEBUG_BASHRC = 1 ]] && echo "Setting MySQL"
-export MYSQL_HOME=/usr/local/mysql
-export PATH="${PATH}:${MYSQL_HOME}/bin"
-export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${MYSQL_HOME}/lib"
+# [[ $DEBUG_BASHRC = 1 ]] && echo "Setting MySQL"
+# export MYSQL_HOME=/usr/local/mysql
+# export PATH="${PATH}:${MYSQL_HOME}/bin"
+# export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${MYSQL_HOME}/lib"
+
+# icu4c (used by yarn)
+export PATH="/usr/local/opt/icu4c/bin:$PATH"
+export PATH="/usr/local/opt/icu4c/sbin:$PATH"
+export LDFLAGS="-L/usr/local/opt/icu4c/lib"
+export CPPFLAGS="-I/usr/local/opt/icu4c/include"
+export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig"
 
 # Android Development Kit Settings
 #
@@ -91,3 +98,4 @@ if [ -d "$HOME/.projects" ] ; then
 fi
 
 source ~/.git-completion.bash
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
