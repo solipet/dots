@@ -58,3 +58,12 @@ function latest(){
      $prog $lat
    fi
 }
+
+
+# alg --------------------------------------------------------------------------
+#
+# show the definition of the alias given as an argument
+#
+function alg(){
+  alias | grep " $1="
+}

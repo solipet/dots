@@ -1,0 +1,8 @@
+#! /usr/bin/env ruby
+
+require 'date'
+
+last_fall = Date.parse(ENV['LAST_FALL'])
+days = (Date.today - last_fall).to_i
+
+puts "It has been #{days} days since my last fall"
