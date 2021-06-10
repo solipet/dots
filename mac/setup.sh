@@ -7,10 +7,6 @@ echo "TODO: download and install Dropbox from https://www.dropbox.com/install"
 #
 echo "TODO: download and install 1Password from https://agilebits.com/downloads"
 
-# Download and configure Adium
-#
-echo "TODO: download and install Adium from https://adium.im/"
-
 # Download and configure MenuMeters
 #
 echo "TODO: download and install MenuMeters from http://member.ipmu.jp/yuji.tachikawa/MenuMetersElCapitan/"
@@ -18,6 +14,14 @@ echo "TODO: download and install MenuMeters from http://member.ipmu.jp/yuji.tach
 # Download and configure SizeUp
 #
 echo "TODO: download and install SizeUp from http://www.irradiatedsoftware.com/sizeup/"
+
+# Download and configure iTerm2
+#
+echo "TODO: download and install iTerm2 from https://iterm2.com"
+
+# Download and configure RubyMine
+#
+echo "TODO: download and install RubyMine from https://www.jetbrains.com/ruby/download/#section=mac"
 
 # Download and configure Postgres.app
 #
@@ -28,6 +32,56 @@ echo "      or install via: homebrew install postgresql"
 #
 echo "TODO: download and install Redis.app from http://jpadilla.github.io/redisapp/"
 echo "      or install via: homebrew install redis"
+
+sleep1
+echo; echo
+
+# Set up non-work dev environment
+#
+echo "configuring environment"
+if [ ! -d ${HOME}/Documents/dev/dots ]
+then
+  mkdir -p ~/Documents/dev
+  cd ~/Documents/dev
+  git clone git@bitbucket.org:dcprice/dots.git
+fi
+cd ${HOME}
+DOTS=".ackrc .aliases .bash_profile .bash_prompt .commonrc .functions .vimrc"
+DOTS_DIR="${HOME}/Documents/dev/dots"
+DOTS_MAC_DIR="${HOME}/Documents/dev/dots/mac"
+for DOT in ${DOTS}; do
+  if [ ! -h ${HOME}/${DOT} ]
+  then
+    echo "    linking ${DOT}"
+    ln -s ${DOTS_MAC_DIR}/${DOT}
+  else
+    echo "    ${DOT} already linked"
+  fi
+done
+
+if [[ -h ${HOME}/.bashrc ]]
+then
+  echo -n "    .bashrc exists! type YES to remove it and start clean (anything else will leave it alone): "
+  read remove
+  if [[ $remove = "YES" ]]
+  then
+    echo "        removing existing .bashrc..."
+    rm -f ~/.bashrc
+  else
+    echo "        not removing .bashrc... carry on!"
+  fi
+fi
+
+if [ ! -h ${HOME}/.bashrc ]
+then
+  echo "    linking .bashrc"
+  ln -s ${DOTS_MAC_DIR}/.commonrc .bashrc
+else
+  echo "    .bashrc already linked"
+fi
+
+# Load the environment
+source ~/.bashrc
 
 
 # Install homebrew
@@ -43,7 +97,7 @@ fi
 # Install brews
 #
 echo "installing brews"
-BREWS="ack awscli bash ctags dos2unix git gpg graphviz imagemagick jq python3 readline tmux tree wget"
+BREWS="ack awscli bash ctags dos2unix git gpg graphviz imagemagick jq postgresql python3 readline redis tmux tree wget"
 for BREW in ${BREWS}; do
   if [ ! -h /usr/local/bin/$BREW ]
   then
@@ -70,13 +124,21 @@ fi
 #   echo "    redis already installed"
 # fi
 
+# Start PostgreSQL and Redis
+brew service start postgresql
+brew service start redis
+
 # Install rvm and some rubies
 #
 echo; echo
 echo "    installing rvm"
-RUBIES="2.5.5 2.6.0"
-DEFAULT_RUBY="2.5.5"
-RAILS="5.2.1"
+echo "        if this fails to install ruby due to a problem in libffi, come back and uncomment the some variables to use"
+# export LDFLAGS="-L/opt/homebrew/opt/libffi/lib"
+# export CPPFLAGS="-I/opt/homebrew/opt/libffi/include"
+# export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
+RUBIES="2.6.5 2.7.3"
+DEFAULT_RUBY="2.6.5"
+RAILS="6.1.3"
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 \curl -sSL https://get.rvm.io | bash -s stable
 for RUBY in ${RUBIES}; do
@@ -103,6 +165,30 @@ fi
 
 echo; echo
 
+# Install nvm and some nodes
+#
+echo; echo
+echo "    installing nvm"
+NODES="12.13.1"
+DEFAULT_NODE="12.13.1"
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+for NODE in ${NODEs}; do
+  if [ ! -e ${HOME}/.nvm/versions/node/v${NODE} ]
+  then
+    echo "    installing node ${NODE}"
+    nvm install ${NODE}
+    nvm use ${RUBY}
+  else
+    echo "    node ${NODE} already installed"
+  fi
+done
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm alias default ${DEFAULT_NODE}
+
+echo; echo
+
 # Install awslogs
 # https://github.com/jorgebastida/awslogs
 echo "    installing awslogs"
@@ -116,36 +202,6 @@ cd aws-cft-tools
 bundle install
 bundle exec rake install
 
-# Set up non-work dev environment
-#
-echo "configuring environment"
-if [ ! -d ${HOME}/Documents/dev/dots ]
-then
-  mkdir -p ~/Documents/dev
-  cd ~/Documents/dev
-  git clone git@bitbucket.org:dcprice/dots.git
-fi
-cd ${HOME}
-DOTS=".ackrc .aliases .bash_profile .bash_prompt .commonrc .functions .vimrc"
-DOTS_DIR="${HOME}/Documents/dev/dots"
-DOTS_MAC_DIR="${HOME}/Documents/dev/dots/mac"
-for DOT in ${DOTS}; do
-  if [ ! -h ${HOME}/${DOT} ]
-  then
-    echo "    linking ${DOT}"
-    ln -s ${DOTS_MAC_DIR}/${DOT}
-  else
-    echo "    ${DOT} already linked"
-  fi
-done
-if [ ! -h ${HOME}/.bashrc ]
-then
-  echo "    linking .bashrc"
-  ln -s ${DOTS_MAC_DIR}/.commonrc .bashrc
-else
-  echo "    .bashrc already linked"
-fi
-
 # Set up work environment
 #
 if [ ! -d ${HOME}/.projects ]
@@ -158,6 +214,16 @@ then
   echo "******* Need to set up .projects/available configs ********"
 else
   echo "appears that the work projects are already configured"
+fi
+
+# Set up vim color scheme
+if [ ! -d ${HOME}/.vim/colors/solipet.vim ]
+then
+  mkdir -p ~/.vim/colors
+  cd ~/.vim/colors
+  ln -s ${DOTS_MAC_DIR}/.vim/colors/solipet.vim
+else
+  echo "appears that vim color scheme is already configured"
 fi
 
 # Set up vim with pathogen and various bundles

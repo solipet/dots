@@ -1,6 +1,6 @@
 export DEBUG_BASHRC=0
 
-export LAST_FALL='2021-04-02'
+export LAST_FALL='2021-06-09'
 
 # Set Prompt
 
@@ -25,6 +25,8 @@ export PATH=${PATH}:"/usr/bin"
 export PATH=${PATH}:"/bin"
 export PATH=${PATH}:"/usr/sbin"
 export PATH=${PATH}:"/sbin"
+export PATH=${PATH}:"/opt/homebrew/bin"
+export PATH=${PATH}:"/opt/homebrew/sbin"
 ### Added by the Heroku Toolbelt
 export PATH="${PATH}:/usr/local/heroku/bin"
 ### Go!
@@ -52,7 +54,7 @@ export ACK_PAGER='less -R'
 
 # PostgreSQL
 [[ $DEBUG_BASHRC = 1 ]] && echo "Setting PostgreSQL"
-export PGSQL_HOME=/Applications/Postgres.app/Contents/Versions/9.6
+export PGSQL_HOME=/Applications/Postgres.app/Contents/Versions/11
 export PATH="${PATH}:${PGSQL_HOME}/bin"
 
 # MySQL
@@ -64,9 +66,15 @@ export PATH="${PATH}:${PGSQL_HOME}/bin"
 # icu4c (used by yarn)
 export PATH="/usr/local/opt/icu4c/bin:$PATH"
 export PATH="/usr/local/opt/icu4c/sbin:$PATH"
-export LDFLAGS="-L/usr/local/opt/icu4c/lib"
+#export LDFLAGS="-L/usr/local/opt/icu4c/lib"
 export CPPFLAGS="-I/usr/local/opt/icu4c/include"
 export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig"
+
+# libffi (used by rvm on M1)
+export LDFLAGS="-L/opt/homebrew/opt/libffi/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/libffi/include"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
+
 
 # Android Development Kit Settings
 #
