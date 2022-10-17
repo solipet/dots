@@ -1,10 +1,20 @@
 # full documentation at http://betterthangrep.com/documentation/
+
+--color
+
+# Ignore these dirs
+--ignore-dir=.git
 --ignore-dir=coverage
 --ignore-dir=log
 --ignore-dir=node_modules
 --ignore-dir=public
 --ignore-dir=tmp
 --ignore-dir=vendor
+
+# File types
 --type-set=json=.json
 --type-set=geojson=.geojson
 --type-set=log=.log
+--type-set=svg=.svg
+--type-set=bak=.bak
+--type-set=tf=.tf

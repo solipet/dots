@@ -2,7 +2,140 @@
 
 require 'date'
 
-last_fall = Date.parse(ENV['LAST_FALL'])
-days = (Date.today - last_fall).to_i
+INCLUDE_YEAR = true
 
-puts "It has been #{days} days since my last fall"
+def future?(date)
+  (date - Date.today).to_i > 0
+end
+
+def date_string(date, include_year = false)
+  return date.strftime("%A, %B %-d, %Y") if include_year
+
+  date.strftime("%A, %B %-d")
+end
+
+def weekday(date)
+  date.strftime("%A")
+end
+
+def median(array)
+  return nil if array.empty?
+  sorted = array.sort
+  len = sorted.length
+  (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+end
+
+#LAST_FALL='2019'
+#LAST_FALL='2019-11-12'
+#LAST_FALL='2019-12'
+SERIOUS_FALLS = [
+  Date.parse('2020-01-09'),
+  Date.parse('2020-01-21'),
+  Date.parse('2020-04-15'),
+  Date.parse('2020-05-01'), # tripped walking the neighborhood, broke both hands
+  Date.parse('2020-08-09'), # tripped on a yoga block, fell bruising right hip
+  Date.parse('2020-10-08'), # tripped while walking the Inner Harbor, Ray Lewis tattoo on my ass
+  Date.parse('2020-12-31'), # attempting to carry box of booze, tripped and fell, losing box, saving booze
+  Date.parse('2021-02-27'), # tripped over feet in basement, bruised tailbone
+  Date.parse('2021-03-16'), # tripped on basement run, faceplanted, strained right shoulder
+  Date.parse('2021-06-09'), # at work, leaned against a sliding door and fell into the office
+  Date.parse('2021-07-04'), # tripped on the patio, nearly fell into a glass table
+  Date.parse('2021-07-14'), # fell on the sidewalk walking to PT, strained right wrist
+  Date.parse('2021-09-20'), # tripped over Kerry's computer bag, bruised right hip, fixed SI joint
+  Date.parse('2021-09-29'), # fell backwards at work, bruised left hip, sore left thumb
+  Date.parse('2021-10-21'), # fell at the drive in, then fell again at home
+  Date.parse('2021-11-17'), # tripped at PT and faceplanted on the turf. No injury, but jaw was achey that night.
+  Date.parse('2021-12-14'), # lost balance in basement, grabbed post, swung around and hit head on sofa. Bloody temple.
+  Date.parse('2022-02-21'), # tripped on dining room rug, landed on a banana, chaos insued.
+  Date.parse('2022-03-26'), # after a massage, fell backward in the kitchen while preparing breakfast - no injury.
+  Date.parse('2022-04-23'), # hand slipped on the hiking pole, face planted into a bag of litter.
+  Date.parse('2022-06-06'), # Clear Creek Canyon - 2.25 mi walk, got caught in thunderstorm, scraped hands/elbows/knees.
+  Date.parse('2022-06-29'), # Face plant in gym lobby. Left hand hurts.
+  Date.parse('2022-07-10'), # Preparing food, fell backward in the kitchen, bruised my tailbone
+  Date.parse('2022-08-22'), # Swatting at a mosquito on my hip, fell backwards on to my left butt cheek
+  Date.parse('2022-09-13'), # Startled in the kitchen, grabbed at the island, but caught gift card. Hit head, left arm/hand on pantry door
+]
+SILLY_FALLS = [
+  Date.parse('2019-12-21'),
+  Date.parse('2020-10-31'), # picking up candles, lost balance and fell over
+  Date.parse('2021-01-02'), # stepping over branches in back yard, gracefully fell
+  Date.parse('2021-04-02'), # lost balance in basement, got low, gentle fall
+  Date.parse('2021-08-11'), # lost balance next to bed
+  Date.parse('2021-09-07'), # lost balance standing in bedroom doorway
+  Date.parse('2021-11-03'), # stumbled in the office, soft landing on my butt
+  Date.parse('2021-12-20'), # in our hotel room, coughed and lost balance
+  Date.parse('2022-02-13'), # lost my balance next to the exercise bike, couldn't get my foot around the base to regain balance, ungracefully sat down.
+  Date.parse('2022-06-17'), # closing the pantry door I clipped my exposed toes, fell back into the refrigerator.
+]
+ALL_FALLS=(SERIOUS_FALLS.dup << SILLY_FALLS).flatten.sort.uniq
+
+durations = []
+(ALL_FALLS.length - 1).times do |index|
+  duration = (ALL_FALLS[index + 1] - ALL_FALLS[index]).to_i
+  puts "    it was #{duration} days before I had a fall on #{date_string(ALL_FALLS[index + 1], INCLUDE_YEAR)}"
+  durations << duration
+  # puts "After #{'%20.20s' % FALLS[index].strftime("%A %F")}, it was #{'%3.3s' % duration} days before my next fall"
+end
+
+serious_durations = []
+(SERIOUS_FALLS.length - 1).times do |index|
+  duration = (SERIOUS_FALLS[index + 1] - SERIOUS_FALLS[index]).to_i
+  # puts "    it was #{duration} days before I had a bad fall on #{date_string(SERIOUS_FALLS[index + 1])}"
+  serious_durations << duration
+  # puts "After #{'%20.20s' % FALLS[index].strftime("%A %F")}, it was #{'%3.3s' % duration} days before my next fall"
+end
+
+last_fall = ALL_FALLS[-1]
+current_streak = (Date.today - last_fall).to_i
+# durations << current_streak
+goal_25 = last_fall + 25
+goal_50 = last_fall + 50
+goal_100 = last_fall + 100
+
+last_serious_fall = SERIOUS_FALLS[-1]
+current_serious_streak = (Date.today - last_serious_fall).to_i
+serious_durations << current_serious_streak
+serious_goal_25 = last_serious_fall + 25
+serious_goal_50 = last_serious_fall + 50
+serious_goal_100 = last_serious_fall + 100
+
+
+puts "It has been #{current_streak} days since my last fall, #{date_string(last_fall)}"
+puts "It will be 25 days without a fall on #{date_string(goal_25)}" if future? goal_25
+puts "It will be 50 days without a fall on #{date_string(goal_50)}" if future? goal_50
+puts "It will be 100 days without a fall on #{date_string(goal_100)}" if future? goal_100
+
+puts "The average number of days without a fall is #{'%0.2f' % (durations.sum(0.0) / durations.size)}"
+puts "The median number of days without a fall is #{'%0.1f' % median(durations)}"
+puts "The longest number of days without a fall is #{durations.max}"
+puts "The shortest number of days without a fall is #{durations.min}"
+
+puts
+
+puts "It has been #{current_serious_streak} days since my last bad fall, #{date_string(last_serious_fall)}"
+puts "It will be 25 days without a bad fall on #{date_string(serious_goal_25)}" if future? serious_goal_25
+puts "It will be 50 days without a bad fall on #{date_string(serious_goal_50)}" if future? serious_goal_50
+puts "It will be 100 days without a bad fall on #{date_string(serious_goal_100)}" if future? serious_goal_100
+
+puts "The average number of days without a bad fall is #{'%0.2f' % (serious_durations.sum(0.0) / serious_durations.size)}"
+puts "The median number of days without a bad fall is #{'%0.1f' % median(serious_durations)}"
+puts "The longest number of days without a bad fall is #{serious_durations.max}"
+puts "The shortest number of days without a bad fall is #{serious_durations.min}"
+
+# COVID_SHUTDOWN='2020-03-16'
+# COVID_STAY_AT_HOME='2020-03-30'
+# puts "500 days after COVID shutdown is #{(Date.parse(COVID_SHUTDOWN) + 500).strftime("%A, %B %-d")}"
+
+# weekdays = {
+#   "Sunday" => 0,
+#   "Monday" => 0,
+#   "Tuesday" => 0,
+#   "Wednesday" => 0,
+#   "Thursday" => 0,
+#   "Friday" => 0,
+#   "Saturday" => 0,
+# }
+# ALL_FALLS.each do |date|
+#   weekdays[weekday(date)] += 1
+# end
+# pp weekdays

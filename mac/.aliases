@@ -12,6 +12,7 @@ alias psg="ps -ef | grep "
 alias rm='/bin/rm -i'
 alias tl='tree | less'
 alias dad='echo; curl https://icanhazdadjoke.com/; echo'
+alias findword='cat /usr/share/dict/words | grep -E ' # '^[aeoutp]{3}id$'
 #sudo netstat -ltnp | grep ':80'
 
 # Development ------------------------------------------------------------------
@@ -27,6 +28,7 @@ alias gm="git remote show origin | grep 'HEAD branch:' | awk -F ': ' '{print $$2
 alias gp='git push'
 alias gs='git status'
 alias changes='git diff --name-only `git show-branch --merge-base main`'
+alias mocha='npx mocha'
 alias packer='time packer '
 alias dc='docker-compose '
 alias pbj='pbpaste | jq -S'
