@@ -1,27 +1,23 @@
-[user]
-	name = Douglas Price
-	email = dprice@fearless.tech
 [alias]
   co    = checkout
   ci    = commit
-  ca    = commit --amend
   cm    = commit -m
+  ca    = commit --amend
+  laf   = log --abbrev-commit --decorate --date=short --format=format:'%C("#ffff00")%h%C(reset) - %C(cyan)%ad%C(reset) %C("#008800")(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset) %C("#aa55ff")%D%C(reset)' --all --full-history --
   lola  = log --graph --abbrev-commit --decorate --date=short --format=format:'%C("#ffff00")%h%C(reset) - %C(cyan)%ad%C(reset) %C("#008800")(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset) %C("#aa55ff")%D%C(reset)' --all
+  lb    = log --graph --abbrev-commit --decorate --date=short --format=format:'%C("#ffff00")%h%C(reset) - %C(cyan)%ad%C(reset) %C("#008800")(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset) %C("#aa55ff")%D%C(reset)'
   pop   = stash pop
   dev   = checkout develop
   stg   = checkout staging
-  mas   = checkout master
   main  = checkout main
   sin   = push --force-with-lease
   satan = push --force
-  clean-branches = "!f() { rm .git/refs/heads/dprice-*; }; f"
+  unpull = reset --hard HEAD@{1}
+[user]
+  email = douglas.price@gsa.gov
+  name = Douglas Price
 [core]
-	autocrlf = false
   excludesfile = /Users/doug/.gitignore_global
-[push]
-	default = upstream
-[branch]
-	autosetuprebase = always
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path =
@@ -30,5 +26,5 @@
 	trustExitCode = true
 [rebase]
   instructionFormat = [%an @ %ar] %s
-[color]
-	ui = auto
+[grep]
+  lineNumber = true
