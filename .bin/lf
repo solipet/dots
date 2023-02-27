@@ -54,6 +54,15 @@ SERIOUS_FALLS = [
   Date.parse('2022-07-10'), # Preparing food, fell backward in the kitchen, bruised my tailbone
   Date.parse('2022-08-22'), # Swatting at a mosquito on my hip, fell backwards on to my left butt cheek
   Date.parse('2022-09-13'), # Startled in the kitchen, grabbed at the island, but caught gift card. Hit head, left arm/hand on pantry door
+  Date.parse('2022-10-24'), # Lost balance moving between kitchen and living room. Landed on left side, no injury.
+  Date.parse('2022-10-29'), # After a walk around the neighborhood, tripped on the curb. No injury.
+  Date.parse('2022-11-13'), # Bringing in a bag of groceries, storm door nudged me and I dove into the floor.
+  Date.parse('2022-11-18'), # Lost balance in the basement, fell back onto left butt cheek
+  Date.parse('2022-12-03'), # Walking into Gunther & Co., lost balance and fell, slapping my head on the cement floor.
+  Date.parse('2022-12-12'), # In the basement, lost balance and fell forward. Got low so didn't land hard.
+  Date.parse('2022-12-20'), # In the kitchen, hiking pole slipped, lurched forward into the refrigerator.
+  Date.parse('2023-01-06'), # Gathering breakfast at a hotel in CO, I sneezed and blew myself over.
+  Date.parse('2023-01-17'), # Checking out at Trader Joe's, when I transitioned from cart back to poles, I lost my balance and fell over.
 ]
 SILLY_FALLS = [
   Date.parse('2019-12-21'),
@@ -72,9 +81,9 @@ ALL_FALLS=(SERIOUS_FALLS.dup << SILLY_FALLS).flatten.sort.uniq
 durations = []
 (ALL_FALLS.length - 1).times do |index|
   duration = (ALL_FALLS[index + 1] - ALL_FALLS[index]).to_i
-  puts "    it was #{duration} days before I had a fall on #{date_string(ALL_FALLS[index + 1], INCLUDE_YEAR)}"
+  # puts "    it was #{duration} days before I had a fall on #{date_string(ALL_FALLS[index + 1], INCLUDE_YEAR)}"
   durations << duration
-  # puts "After #{'%20.20s' % FALLS[index].strftime("%A %F")}, it was #{'%3.3s' % duration} days before my next fall"
+  # puts "After #{'%20.20s' % ALL_FALLS[index].strftime("%A %F")}, it was #{'%3.3s' % duration} days before my next fall"
 end
 
 serious_durations = []
@@ -82,7 +91,7 @@ serious_durations = []
   duration = (SERIOUS_FALLS[index + 1] - SERIOUS_FALLS[index]).to_i
   # puts "    it was #{duration} days before I had a bad fall on #{date_string(SERIOUS_FALLS[index + 1])}"
   serious_durations << duration
-  # puts "After #{'%20.20s' % FALLS[index].strftime("%A %F")}, it was #{'%3.3s' % duration} days before my next fall"
+  # puts "After #{'%20.20s' % SERIOUS_FALLS[index].strftime("%A %F")}, it was #{'%3.3s' % duration} days before my next fall"
 end
 
 last_fall = ALL_FALLS[-1]
@@ -94,7 +103,7 @@ goal_100 = last_fall + 100
 
 last_serious_fall = SERIOUS_FALLS[-1]
 current_serious_streak = (Date.today - last_serious_fall).to_i
-serious_durations << current_serious_streak
+#serious_durations << current_serious_streak
 serious_goal_25 = last_serious_fall + 25
 serious_goal_50 = last_serious_fall + 50
 serious_goal_100 = last_serious_fall + 100

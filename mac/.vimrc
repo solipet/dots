@@ -94,3 +94,8 @@ autocmd BufWinEnter * match Emdash /–\+/
 autocmd InsertEnter * match Emdash /–\+\%#\@<!/
 autocmd InsertLeave * match Emdash /–\+/
 autocmd BufWinLeave * call clearmatches()
+
+" Enable fzf
+set rtp+=/usr/local/opt/fzf
+" open the fuzzy file finder
+nnoremap <leader>oo :FZF<cr>

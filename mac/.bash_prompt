@@ -32,7 +32,8 @@ parse_git_rev()
 ruby_desc()
 {
   # ~/.rvm/bin/rvm-prompt u v
-  rbenv version-name
+  # rbenv version-name
+  ruby -v | awk '{print $2}'
 }
 
 if [ "root" == `whoami` ]; then

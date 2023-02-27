@@ -1,8 +1,5 @@
 #! /bin/bash
 
-#
-echo "TODO: download and install Dropbox from https://www.dropbox.com/install"
-
 # Download and set up 1Password
 #
 echo "TODO: download and install 1Password from https://agilebits.com/downloads"
@@ -25,15 +22,15 @@ echo "TODO: download and install RubyMine from https://www.jetbrains.com/ruby/do
 
 # Download and configure Postgres.app
 #
-echo "TODO: download and install Postgres.app from http://postgresapp.com/"
-echo "      or install via: homebrew install postgresql"
+#echo "TODO: download and install Postgres.app from http://postgresapp.com/"
+#echo "      or install via: homebrew install postgresql"
 
 # Download and configure Redis.app
 #
-echo "TODO: download and install Redis.app from http://jpadilla.github.io/redisapp/"
-echo "      or install via: homebrew install redis"
+#echo "TODO: download and install Redis.app from http://jpadilla.github.io/redisapp/"
+#echo "      or install via: homebrew install redis"
 
-sleep1
+sleep 1
 echo; echo
 
 # Set up non-work dev environment
@@ -43,7 +40,7 @@ if [ ! -d ${HOME}/Documents/dev/dots ]
 then
   mkdir -p ~/Documents/dev
   cd ~/Documents/dev
-  git clone git@bitbucket.org:dcprice/dots.git
+  git clone git@github.com:solipet/dots.git
 fi
 cd ${HOME}
 DOTS=".ackrc .aliases .bash_profile .bash_prompt .commonrc .functions .vimrc"
@@ -86,10 +83,10 @@ source ~/.bashrc
 
 # Install homebrew
 #
-if [ ! -e /usr/local/Homebrew/bin/brew ]
+if [ ! -e /opt/homebrew/bin/brew ]
 then
   echo "installing homebrew"
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
   echo "homebrew already installed"
 fi
@@ -97,7 +94,7 @@ fi
 # Install brews
 #
 echo "installing brews"
-BREWS="ack awscli bash ctags dos2unix git gpg graphviz imagemagick jq postgresql python3 readline redis tmux tree wget"
+BREWS="ack awscli bash chruby ctags dos2unix git gpg graphviz imagemagick jq libyaml openssl python3 readline ruby-build tmux tree wget"
 for BREW in ${BREWS}; do
   if [ ! -h /usr/local/bin/$BREW ]
   then
@@ -115,14 +112,24 @@ then
 else
   echo "    macvim already installed"
 fi
-# # so is redis
-# if [ ! -h /usr/local/bin/redis-cli ]
-# then
-#   echo "    installing redis"
-#   brew install redis
-# else
-#   echo "    redis already installed"
-# fi
+# so is postgresql
+if [ ! -h /opt/homebrew/bin/psql ]
+then
+  echo "    installing postgresql@14"
+  brew install postgresql@14
+  brew service start postgresql@14
+else
+  echo "    postgresql@14 already installed"
+fi
+# so is redis
+if [ ! -h /opt/homebrew/bin/redis-cli ]
+then
+  echo "    installing redis"
+  brew install redis
+  brew service start redis
+else
+  echo "    redis already installed"
+fi
 
 # Start PostgreSQL and Redis
 brew service start postgresql
@@ -130,38 +137,39 @@ brew service start redis
 
 # Install rvm and some rubies
 #
+#echo; echo
+#echo "    installing rvm"
+#RUBIES="2.5.5 2.6.0"
+#DEFAULT_RUBY="2.5.5"
+#RAILS="5.2.1"
+#gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+#\curl -sSL https://get.rvm.io | bash -s stable
+#for RUBY in ${RUBIES}; do
+#  if [ ! -e ${HOME}/.rvm/rubies/ruby-${RUBY} ]
+#  then
+#    echo "    installing ruby ${RUBY}"
+#    rvm install ${RUBY}
+#    rvm use ${RUBY}
+#    echo "      installing nokogiri"
+#    nokogiri_install = "do gem install nokogiri"
+#    rvm @global ${nokogiri_install}
+#  else
+#    echo "    ruby ${RUBY} already installed"
+#  fi
+#done
+#rvm default use ${DEFAULT_RUBY}
+#if [ ${RAILS} ]
+#then
+#  echo "    installing rails ${RAILS}"
+#  gem install rails -v ${RAILS}
+#else
+#  echo "    skip the install on rails for now"
+#fi
+
+# Install some rubies
 echo; echo
-echo "    installing rvm"
-echo "        if this fails to install ruby due to a problem in libffi, come back and uncomment the some variables to use"
-# export LDFLAGS="-L/opt/homebrew/opt/libffi/lib"
-# export CPPFLAGS="-I/opt/homebrew/opt/libffi/include"
-# export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
-RUBIES="2.6.5 2.7.3"
-DEFAULT_RUBY="2.6.5"
-RAILS="6.1.3"
-gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-\curl -sSL https://get.rvm.io | bash -s stable
-for RUBY in ${RUBIES}; do
-  if [ ! -e ${HOME}/.rvm/rubies/ruby-${RUBY} ]
-  then
-    echo "    installing ruby ${RUBY}"
-    rvm install ${RUBY}
-    rvm use ${RUBY}
-    echo "      installing nokogiri"
-    nokogiri_install = "do gem install nokogiri"
-    rvm @global ${nokogiri_install}
-  else
-    echo "    ruby ${RUBY} already installed"
-  fi
-done
-rvm default use ${DEFAULT_RUBY}
-if [ ${RAILS} ]
-then
-  echo "    installing rails ${RAILS}"
-  gem install rails -v ${RAILS}
-else
-  echo "    skip the install on rails for now"
-fi
+ruby-build 3.2.0 ~/.rubies/ruby-3.2.0
+ruby-build 2.7.7 ~/.rubies/ruby-2.7.7
 
 echo; echo
 
@@ -191,16 +199,46 @@ echo; echo
 
 # Install awslogs
 # https://github.com/jorgebastida/awslogs
-echo "    installing awslogs"
-pip install awslogs
+#echo "    installing awslogs"
+#pip install awslogs
 
 # Install aws-cft
 # https://github.com/USSBA/aws-cft-tools
-cd ~/Documents/dev
-git clone git@github.com:USSBA/aws-cft-tools
-cd aws-cft-tools
-bundle install
-bundle exec rake install
+#cd ~/Documents/dev
+#git clone git@github.com:USSBA/aws-cft-tools
+#cd aws-cft-tools
+#bundle install
+#bundle exec rake install
+
+# Set up non-work dev environment
+#
+echo "configuring environment"
+if [ ! -d ${HOME}/Documents/dev/dots ]
+then
+  mkdir -p ~/Documents/dev
+  cd ~/Documents/dev
+  git clone git@github.org:solipet/dots.git
+fi
+cd ${HOME}
+DOTS=".ackrc .aliases .bash_profile .bash_prompt .commonrc .functions .vimrc"
+DOTS_DIR="${HOME}/Documents/dev/dots"
+DOTS_MAC_DIR="${HOME}/Documents/dev/dots/mac"
+for DOT in ${DOTS}; do
+  if [ ! -h ${HOME}/${DOT} ]
+  then
+    echo "    linking ${DOT}"
+    ln -s ${DOTS_MAC_DIR}/${DOT}
+  else
+    echo "    ${DOT} already linked"
+  fi
+done
+if [ ! -h ${HOME}/.bashrc ]
+then
+  echo "    linking .bashrc"
+  ln -s ${DOTS_MAC_DIR}/.commonrc .bashrc
+else
+  echo "    .bashrc already linked"
+fi
 
 # Set up work environment
 #

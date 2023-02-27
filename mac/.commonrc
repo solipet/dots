@@ -25,10 +25,6 @@ export PATH=${PATH}:"/usr/sbin"
 export PATH=${PATH}:"/sbin"
 export PATH=${PATH}:"/opt/homebrew/bin"
 export PATH=${PATH}:"/opt/homebrew/sbin"
-### Added by the Heroku Toolbelt
-export PATH="${PATH}:/usr/local/heroku/bin"
-### Go!
-export PATH="${PATH}:/usr/local/go/bin"
 [[ -d "$HOME/.bin" ]] && export PATH=$HOME/.bin:$PATH
 #export PATH=${PATH}:"."
 export WIFIWAND_HOME=/Users/doug/Documents/dev/wifiwand/exe
@@ -51,9 +47,9 @@ export HISTSIZE=5000
 export ACK_PAGER='less -R'
 
 # PostgreSQL
-[[ $DEBUG_BASHRC = 1 ]] && echo "Setting PostgreSQL"
-export PGSQL_HOME=/Applications/Postgres.app/Contents/Versions/11
-export PATH="${PATH}:${PGSQL_HOME}/bin"
+# [[ $DEBUG_BASHRC = 1 ]] && echo "Setting PostgreSQL"
+# export PGSQL_HOME=/Applications/Postgres.app/Contents/Versions/9.6
+# export PATH="${PATH}:${PGSQL_HOME}/bin"
 
 # MySQL
 # [[ $DEBUG_BASHRC = 1 ]] && echo "Setting MySQL"
@@ -62,11 +58,14 @@ export PATH="${PATH}:${PGSQL_HOME}/bin"
 # export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:${MYSQL_HOME}/lib"
 
 # icu4c (used by yarn)
-export PATH="/usr/local/opt/icu4c/bin:$PATH"
-export PATH="/usr/local/opt/icu4c/sbin:$PATH"
-#export LDFLAGS="-L/usr/local/opt/icu4c/lib"
-export CPPFLAGS="-I/usr/local/opt/icu4c/include"
-export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig"
+export PATH="/opt/homebrew/opt/icu4c/bin:$PATH"
+export PATH="/opt/homebrew/opt/icu4c/sbin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/icu4c/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/icu4c/include"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/icu4c/lib/pkgconfig"
+
+# Set PATH, MANPATH, etc., for Homebrew.
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # libffi (used by rvm on M1)
 export LDFLAGS="-L/opt/homebrew/opt/libffi/lib"
@@ -76,16 +75,16 @@ export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
 
 # Android Development Kit Settings
 #
-[[ $DEBUG_BASHRC = 1 ]] && echo "ADK settings..."
-export ADT_HOME=$HOME/Documents/dev/adt-bundle-mac-x86_64-20130219
-#pathmunge ${ADT_HOME}/sdk/platform-tools after
+# [[ $DEBUG_BASHRC = 1 ]] && echo "ADK settings..."
+# export ADT_HOME=$HOME/Documents/dev/adt-bundle-mac-x86_64-20130219
+# pathmunge ${ADT_HOME}/sdk/platform-tools after
 
 # rbenv
-[[ $DEBUG_BASHRC = 1 ]] && echo "Loading rbenv"
-if [ -d "$HOME/.rbenv/bin" ] ; then
-  export PATH="$HOME/.rbenv/bin":$PATH
-fi
-eval "$(rbenv init - bash)"
+#[[ $DEBUG_BASHRC = 1 ]] && echo "Loading rbenv"
+#if [ -d "$HOME/.rbenv/bin" ] ; then
+#  export PATH="$HOME/.rbenv/bin":$PATH
+#fi
+#eval "$(rbenv init - bash)"
 
 # rvm
 # [[ $DEBUG_BASHRC = 1 ]] && echo "Loading rvm"
@@ -109,3 +108,6 @@ source ~/.git-completion.bash
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# Bump up the number of allowed open files (default: 256)
+ulimit -Sn 65536
