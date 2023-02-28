@@ -43,7 +43,7 @@ then
   git clone git@github.com:solipet/dots.git
 fi
 cd ${HOME}
-DOTS=".ackrc .aliases .bash_profile .bash_prompt .commonrc .functions .vimrc"
+DOTS=".ackrc .aliases .bash_profile .bash_prompt .commonrc .functions .git-completion.bash .vimrc .zshrc"
 DOTS_DIR="${HOME}/Documents/dev/dots"
 DOTS_MAC_DIR="${HOME}/Documents/dev/dots/mac"
 for DOT in ${DOTS}; do
@@ -90,6 +90,17 @@ then
 else
   echo "homebrew already installed"
 fi
+
+# Install oh-my-zsh
+#
+if [ ! -e ${HOME}/.oh-my-zsh/oh-my-zsh.sh ]
+then
+  echo "installing oh-my-zsh"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+else
+  echo "oh-my-zsh already installed"
+fi
+
 
 # Install brews
 #
