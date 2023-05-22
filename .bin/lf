@@ -3,7 +3,21 @@
 
 # rubocop/disable Layout/LineLength
 
+require 'byebug'
 require 'date'
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = 'Usage: lf [options]'
+
+  opts.on('-b', '--[no-]bad_falls', 'Include bad fall only statistics') do |v|
+    options[:bad_falls] = v
+  end
+  opts.on('-v', '--[no-]verbose', 'Run verbosely') do |v|
+    options[:verbose] = v
+  end
+end.parse!
 
 INCLUDE_YEAR = true
 
@@ -85,10 +99,11 @@ ALL_FALLS.uniq!
 durations = []
 (ALL_FALLS.length - 1).times do |index|
   duration = (ALL_FALLS[index + 1] - ALL_FALLS[index]).to_i
-  # puts "    it was #{duration} days before I had a fall on #{date_string(ALL_FALLS[index + 1], INCLUDE_YEAR)}"
+  puts "It was #{duration} days before I had a fall on #{date_string(ALL_FALLS[index + 1], include_year: INCLUDE_YEAR)}" if options[:verbose]
   durations << duration
   # puts "After #{'%20.20s' % ALL_FALLS[index].strftime("%A %F")}, it was #{'%3.3s' % duration} days before my next fall"
 end
+puts if options[:verbose]
 
 serious_durations = []
 (SERIOUS_FALLS.length - 1).times do |index|
@@ -125,15 +140,17 @@ puts "The shortest number of days without a fall is #{durations.min}"
 
 puts
 
-puts "It has been #{current_serious_streak} days since my last bad fall, #{date_string(last_serious_fall)}"
-puts "It will be 25 days without a bad fall on #{date_string(serious_goal_25)}" if future? serious_goal_25
-puts "It will be 50 days without a bad fall on #{date_string(serious_goal_50)}" if future? serious_goal_50
-puts "It will be 100 days without a bad fall on #{date_string(serious_goal_100)}" if future? serious_goal_100
+if options[:bad_falls]
+  puts "It has been #{current_serious_streak} days since my last bad fall, #{date_string(last_serious_fall)}"
+  puts "It will be 25 days without a bad fall on #{date_string(serious_goal_25)}" if future? serious_goal_25
+  puts "It will be 50 days without a bad fall on #{date_string(serious_goal_50)}" if future? serious_goal_50
+  puts "It will be 100 days without a bad fall on #{date_string(serious_goal_100)}" if future? serious_goal_100
 
-puts "The average number of days without a bad fall is #{'%0.2f' % (serious_durations.sum(0.0) / serious_durations.size)}"
-puts "The median number of days without a bad fall is #{'%0.1f' % median(serious_durations)}"
-puts "The longest number of days without a bad fall is #{serious_durations.max}"
-puts "The shortest number of days without a bad fall is #{serious_durations.min}"
+  puts "The average number of days without a bad fall is #{'%0.2f' % (serious_durations.sum(0.0) / serious_durations.size)}"
+  puts "The median number of days without a bad fall is #{'%0.1f' % median(serious_durations)}"
+  puts "The longest number of days without a bad fall is #{serious_durations.max}"
+  puts "The shortest number of days without a bad fall is #{serious_durations.min}"
+end
 
 # COVID_SHUTDOWN='2020-03-16'
 # COVID_STAY_AT_HOME='2020-03-30'
