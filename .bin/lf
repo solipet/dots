@@ -1,37 +1,38 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
+
+# rubocop/disable Layout/LineLength
 
 require 'date'
 
 INCLUDE_YEAR = true
 
 def future?(date)
-  (date - Date.today).to_i > 0
+  (date - Date.today).to_i.positive?
 end
 
-def date_string(date, include_year = false)
-  return date.strftime("%A, %B %-d, %Y") if include_year
+def date_string(date, include_year: false)
+  return date.strftime('%A, %B %-d, %Y') if include_year
 
-  date.strftime("%A, %B %-d")
+  date.strftime('%A, %B %-d')
 end
 
 def weekday(date)
-  date.strftime("%A")
+  date.strftime('%A')
 end
 
 def median(array)
   return nil if array.empty?
+
   sorted = array.sort
   len = sorted.length
   (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
 end
 
-#LAST_FALL='2019'
-#LAST_FALL='2019-11-12'
-#LAST_FALL='2019-12'
 SERIOUS_FALLS = [
-  Date.parse('2020-01-09'),
-  Date.parse('2020-01-21'),
-  Date.parse('2020-04-15'),
+  Date.parse('2020-01-09'), # tripped going up the stairs at work
+  Date.parse('2020-01-21'), # slipped in socks on the stairs at home
+  Date.parse('2020-04-15'), # tripped on the sidewalk, legs locked up and stumbled into the street
   Date.parse('2020-05-01'), # tripped walking the neighborhood, broke both hands
   Date.parse('2020-08-09'), # tripped on a yoga block, fell bruising right hip
   Date.parse('2020-10-08'), # tripped while walking the Inner Harbor, Ray Lewis tattoo on my ass
@@ -63,9 +64,10 @@ SERIOUS_FALLS = [
   Date.parse('2022-12-20'), # In the kitchen, hiking pole slipped, lurched forward into the refrigerator.
   Date.parse('2023-01-06'), # Gathering breakfast at a hotel in CO, I sneezed and blew myself over.
   Date.parse('2023-01-17'), # Checking out at Trader Joe's, when I transitioned from cart back to poles, I lost my balance and fell over.
+  Date.parse('2023-03-05'), # Tripped over my feet at the bottom of the stairs. No injury.
 ]
 SILLY_FALLS = [
-  Date.parse('2019-12-21'),
+  Date.parse('2019-12-21'), # bumped my hip getting suitcases out of the trunk
   Date.parse('2020-10-31'), # picking up candles, lost balance and fell over
   Date.parse('2021-01-02'), # stepping over branches in back yard, gracefully fell
   Date.parse('2021-04-02'), # lost balance in basement, got low, gentle fall
@@ -76,7 +78,9 @@ SILLY_FALLS = [
   Date.parse('2022-02-13'), # lost my balance next to the exercise bike, couldn't get my foot around the base to regain balance, ungracefully sat down.
   Date.parse('2022-06-17'), # closing the pantry door I clipped my exposed toes, fell back into the refrigerator.
 ]
-ALL_FALLS=(SERIOUS_FALLS.dup << SILLY_FALLS).flatten.sort.uniq
+ALL_FALLS = (SERIOUS_FALLS.dup << SILLY_FALLS).flatten!
+ALL_FALLS.sort!
+ALL_FALLS.uniq!
 
 durations = []
 (ALL_FALLS.length - 1).times do |index|
