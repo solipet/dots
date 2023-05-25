@@ -79,6 +79,7 @@ SERIOUS_FALLS = [
   Date.parse('2023-01-06'), # Gathering breakfast at a hotel in CO, I sneezed and blew myself over.
   Date.parse('2023-01-17'), # Checking out at Trader Joe's, when I transitioned from cart back to poles, I lost my balance and fell over.
   Date.parse('2023-03-05'), # Tripped over my feet at the bottom of the stairs. No injury.
+  Date.parse('2023-05-25'), # Lost balance in the kitchen, grabbed walker but tipped it over. No injury.
 ]
 SILLY_FALLS = [
   Date.parse('2019-12-21'), # bumped my hip getting suitcases out of the trunk
