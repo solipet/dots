@@ -90,6 +90,12 @@ export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
 # [[ $DEBUG_BASHRC = 1 ]] && echo "Loading rvm"
 # [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
+# asdf
+if [ -d "$HOME/.asdf" ] ; then
+  . "$HOME/.asdf/asdf.sh"
+  . "$HOME/.asdf/completions/asdf.bash"
+fi
+
 # nvm
 [[ $DEBUG_BASHRC = 1 ]] && echo "Loading nvm"
 export NVM_DIR="$HOME/.nvm"
@@ -109,5 +115,11 @@ source ~/.git-completion.bash
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
+# auto run ssh-add
+ssh-add --apple-use-keychain ~/.ssh/id_github
+
 # Bump up the number of allowed open files (default: 256)
 ulimit -Sn 65536
+
+# To facilitate signing commits via GPG
+export GPG_TTY=$(tty)

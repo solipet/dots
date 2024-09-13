@@ -16,6 +16,7 @@
 [user]
   email = douglas.price@gsa.gov
   name = Douglas Price
+	signingkey = A49C9185FC67C135
 [core]
   excludesfile = /Users/doug/.gitignore_global
 [difftool "sourcetree"]
