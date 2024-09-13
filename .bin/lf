@@ -80,6 +80,10 @@ SERIOUS_FALLS = [
   Date.parse('2023-01-17'), # Checking out at Trader Joe's, when I transitioned from cart back to poles, I lost my balance and fell over.
   Date.parse('2023-03-05'), # Tripped over my feet at the bottom of the stairs. No injury.
   Date.parse('2023-05-25'), # Lost balance in the kitchen, grabbed walker but tipped it over. No injury.
+  Date.parse('2023-06-12'), # Lost balance in the kitchen, grabbed island, fractured transcervical femoral head, partial hip replacement.
+  Date.parse('2023-11-15'), # Too much weight in walker basket, caught front wheels and went over, landing on forehead.
+  Date.parse('2024-01-20'), # 3am, in the dark, reached to close the door, stubbed my toe, fell into a laundry basket
+  Date.parse('2024-01-24'), # Getting ready to take a shower, while backing up lost balance and fell backwards, pulling my walker over with me
 ]
 SILLY_FALLS = [
   Date.parse('2019-12-21'), # bumped my hip getting suitcases out of the trunk
@@ -116,23 +120,31 @@ end
 
 last_fall = ALL_FALLS[-1]
 current_streak = (Date.today - last_fall).to_i
-# durations << current_streak
-goal_25 = last_fall + 25
-goal_50 = last_fall + 50
-goal_100 = last_fall + 100
+durations << current_streak
+
+def goal(days, last: ALL_FALLS[-1])
+  last + days
+end
 
 last_serious_fall = SERIOUS_FALLS[-1]
 current_serious_streak = (Date.today - last_serious_fall).to_i
-#serious_durations << current_serious_streak
-serious_goal_25 = last_serious_fall + 25
-serious_goal_50 = last_serious_fall + 50
-serious_goal_100 = last_serious_fall + 100
+serious_durations << current_serious_streak
 
+def serious_goal(days, last: SERIOUS_FALLS[-1])
+  last + days
+end
+
+def eoy
+  Date.parse("#{Date.today.year}-12-31")
+end
 
 puts "It has been #{current_streak} days since my last fall, #{date_string(last_fall)}"
-puts "It will be 25 days without a fall on #{date_string(goal_25)}" if future? goal_25
-puts "It will be 50 days without a fall on #{date_string(goal_50)}" if future? goal_50
-puts "It will be 100 days without a fall on #{date_string(goal_100)}" if future? goal_100
+puts "It will be 25 days without a fall on #{date_string(goal(25))}" if future? goal(25)
+puts "It will be 50 days without a fall on #{date_string(goal(50))}" if future? goal(50)
+puts "It will be 100 days without a fall on #{date_string(goal(100))}" if future? goal(100)
+puts "It will be 200 days without a fall on #{date_string(goal(200))}" if future?(goal(200)) && !future?(goal(50))
+puts "It will be 300 days without a fall on #{date_string(goal(300))}" if future?(goal(300)) && !future?(goal(200))
+puts "It will be #{'%0.0f' % (eoy - ALL_FALLS[-1])} days without a fall on #{date_string(eoy)}"
 
 puts "The average number of days without a fall is #{'%0.2f' % (durations.sum(0.0) / durations.size)}"
 puts "The median number of days without a fall is #{'%0.1f' % median(durations)}"
@@ -143,9 +155,9 @@ puts
 
 if options[:bad_falls]
   puts "It has been #{current_serious_streak} days since my last bad fall, #{date_string(last_serious_fall)}"
-  puts "It will be 25 days without a bad fall on #{date_string(serious_goal_25)}" if future? serious_goal_25
-  puts "It will be 50 days without a bad fall on #{date_string(serious_goal_50)}" if future? serious_goal_50
-  puts "It will be 100 days without a bad fall on #{date_string(serious_goal_100)}" if future? serious_goal_100
+  puts "It will be 25 days without a bad fall on #{date_string(serious_goal(25))}" if future? serious_goal(25)
+  puts "It will be 50 days without a bad fall on #{date_string(serious_goal(50))}" if future? serious_goal(50)
+  puts "It will be 100 days without a bad fall on #{date_string(serious_goal(100))}" if future? serious_goal(100)
 
   puts "The average number of days without a bad fall is #{'%0.2f' % (serious_durations.sum(0.0) / serious_durations.size)}"
   puts "The median number of days without a bad fall is #{'%0.1f' % median(serious_durations)}"
