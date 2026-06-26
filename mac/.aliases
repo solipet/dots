@@ -32,6 +32,7 @@ alias mocha='npx mocha'
 alias packer='time packer '
 alias dc='docker-compose '
 alias pbj='pbpaste | jq -S'
+alias event_names="tail -f log/events.log | jq '.name'"
 alias rails='bundle exec rails '
 alias rake='bundle exec rake '
 alias rr='bundle exec rails routes'

@@ -7,7 +7,6 @@
 --ignore-dir=coverage
 --ignore-dir=log
 --ignore-dir=node_modules
---ignore-dir=public
 --ignore-dir=tmp
 --ignore-dir=vendor
 

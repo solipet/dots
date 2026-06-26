@@ -1,4 +1,4 @@
-export DEBUG_BASHRC=0
+# DEBUG_BASHRC=1
 
 # Set Prompt
 
@@ -100,6 +100,7 @@ fi
 [[ $DEBUG_BASHRC = 1 ]] && echo "Loading nvm"
 export NVM_DIR="$HOME/.nvm"
 [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[[ -s "$NVM_DIR/nvm.sh" ]] && nvm use # use the latest
 
 # Load project settings
 [[ $DEBUG_BASHRC = 1 ]] && echo "Loading projects"
