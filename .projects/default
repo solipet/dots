@@ -1,0 +1,10 @@
+[[ $DEBUG_BASHRC = 1 ]] && echo "    setting default project"
+
+# Setting that defines the default work project --------------------------------
+
+export WORK=${PROJECT_DEV}
+if [ -z $CDPATH ] ; then
+  export CDPATH=.:${WORK}:${HOME}/Documents/dev
+else
+  export CDPATH=.:${WORK}:${HOME}/Documents/dev:${CDPATH}
+fi
